@@ -14,11 +14,7 @@ const Login = () => {
   return (
     <>
       <body className="max-h-screen">
-        <a
-          href="https://www.codewithfaraz.com/"
-          className="logo"
-          target="_blank"
-        ></a>
+       
         <section className="bg-gray-300 min-h-screen flex items-center justify-center">
           <div className="bg-gray-100 p-5 rounded-2xl shadow-lg w-full md:w-3/5 flex flex-col md:flex-row">
             <div className="w-full md:w-1/2 px-5 flex flex-col justify-center items-center">
