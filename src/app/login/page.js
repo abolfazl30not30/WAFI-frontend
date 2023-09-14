@@ -1,11 +1,11 @@
 "use client";
 import Image from "next/image";
-
 const Login = () => {
   const googleLogin = () => {
     // Replace with your Google OAuth 2.0 client ID and redirect URI
-    const clientId = "YOUR_CLIENT_ID";
-    const redirectUri = "http://localhost:3000/auth/google/callback";
+    const clientId =
+      "678612018769-t6up75qeqummcqipijeni9spmakf11pd.apps.googleusercontent.com";
+    const redirectUri = "http://localhost:3000";
     const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email%20profile`;
 
     window.location.href = authUrl;
@@ -14,35 +14,63 @@ const Login = () => {
   return (
     <>
       <body className="max-h-screen">
-        <a
-          href="https://www.codewithfaraz.com/"
-          className="logo"
-          target="_blank"
-        ></a>
-        <section className="bg-gray-300 min-h-screen flex items-center justify-center">
-          <div className="bg-gray-100 p-5 rounded-2xl shadow-lg w-full md:w-3/5 flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2 px-5 flex flex-col justify-center items-center">
-              <h2 className="text-4xl md:text-5xl font-bold text-[#00FFB6] font-mono mb-6 sm:mb-8 md:mb-10 lg:mb-12 xl:mb-20 text-center">
-                Welcome to Our Login Page
-              </h2>
-
-              <button
-                onClick={googleLogin}
-                className="bg-white border border-[#00FFB6] py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 hover:bg-[#00FFB6] hover:text-[]"
-              >
-                <span className="ml-4">Login with Google</span>
-              </button>
-            </div>
-
-            <div className="w-full md:w-1/2 mt-5 md:mt-0">
+        <section className="bg-gray-100 md:bg-green-300 min-h-screen flex items-center justify-center">
+          <div className="flex-col bg-gray-100 p-5 rounded-2xl md:shadow-lg w-full items-center md:w-3/5 flex-col flex-col md:flex-col 	">
+            <div className="flex flex-col  items-center m-10">
               <Image
-                src="/Group.svg"
+                src="logo.svg"
                 alt="login image"
                 width={0}
                 height={0}
                 sizes="100vw"
-                style={{ width: "100%", height: "auto" }}
+                style={{ width: "40%", height: "auto" }}
               />
+            </div>
+
+            <div className="flex flex-col md:flex-row mb-7">
+              <div className="w-full md:w-1/2 px-5 flex flex-col justify-center items-center rounded-r-[48px]">
+                <h2 className=" text-4xl  md:text-2xl lg:text-4xl font-bold text-[#333333] font-inter mb-6 sm:mb-8 md:mb-10 lg:mb-12 xl:mb-20 text-center">
+                  <span>Welcome</span> to
+                  <br />
+                  Our <span className="text-[#00FFB6]">Login</span> Page
+                </h2>
+                <button
+                  onClick={googleLogin}
+                  className="bg-[#DB4437] hover:bg-[#f24f41] hover:border-[#ed6f07]
+        border border-[#00FFB6] py-3 w-full rounded-xl mt-5 flex justify-center
+         items-center text-sm hover:scale-105 duration-300 hover:bg-[#00FFB6] md:py-2 hover:border-4	 "
+                >
+                  <Image
+                    src="/1534129544.svg"
+                    alt="login image"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    style={{
+                      width: "7%",
+                      height: "auto",
+                      background: "white",
+                      borderRadius: "100%",
+                    }}
+                  />
+                  <span className="m-2 text-[#ffff] font-bold ">Login with Google</span>
+                </button>
+              </div>
+
+              <div className="w-full md:w-1/2 mt-5 md:mt-0">
+                <Image
+                  src="/mobile.svg"
+                  alt="login image"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                  
+                  }}
+                />
+              </div>
             </div>
           </div>
         </section>

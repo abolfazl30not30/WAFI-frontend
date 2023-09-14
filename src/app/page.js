@@ -1,8 +1,9 @@
-import Image from 'next/image'
+"use client"
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-    </main>
+  return(
+  <>
+      <h1>Hello home page</h1>
+   </>
   )
 }
