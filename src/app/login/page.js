@@ -14,7 +14,7 @@ const Login = () => {
   return (
     <>
       <body suppressHydrationWarning={true} className="max-h-screen">
-        <section className="bg-gray-100 md:bg-green-300 min-h-screen flex items-center justify-center">
+        <section className="bg-gray-100 md:bg-[#f9f9f9] min-h-screen flex items-center justify-center">
           <div className="flex-col bg-gray-100 p-5 rounded-2xl md:shadow-lg w-full items-center md:w-3/5 flex-col flex-col md:flex-col 	">
             <div className="flex flex-col  items-center m-10">
               <Image
@@ -29,7 +29,7 @@ const Login = () => {
 
             <div className="flex flex-col md:flex-row mb-7">
               <div className="w-full md:w-1/2 px-5 flex flex-col justify-center items-center rounded-r-[48px]">
-                <h2 className=" text-4xl  md:text-2xl lg:text-4xl font-bold text-[#333333] font-inter mb-6 sm:mb-8 md:mb-10 lg:mb-12 xl:mb-20 text-center">
+                <h2 className=" text-3xl  md:text-2xl lg:text-3xl font-bold text-[#333333] font-inter mb-6 sm:mb-8 md:mb-10 lg:mb- xl:mb-20 text-center">
                   <span>Welcome</span> to
                   <br />
                   Our <span className="text-[#00FFB6]">Login</span> Page
@@ -37,7 +37,7 @@ const Login = () => {
                 <button
                   onClick={googleLogin}
                   className="bg-[#DB4437] hover:bg-[#f24f41] hover:border-[#ed6f07]
-        border border-[#00FFB6] py-3 w-full rounded-xl mt-5 flex justify-center
+         py-3 w-full rounded-xl  flex justify-center
          items-center text-sm hover:scale-105 duration-300 hover:bg-[#00FFB6] md:py-2 hover:border-4	 "
                 >
                   <Image
@@ -67,7 +67,7 @@ const Login = () => {
                   style={{
                     width: "100%",
                     height: "auto",
-                  
+
                   }}
                 />
               </div>
