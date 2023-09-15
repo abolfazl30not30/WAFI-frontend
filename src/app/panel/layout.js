@@ -2,6 +2,8 @@
 import Link from "next/link";
 import {usePathname} from 'next/navigation'
 import Image from "next/image";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 
 export default function RootLayout({children}) {
 
@@ -16,8 +18,8 @@ export default function RootLayout({children}) {
                         + New chat
                     </button>
                 </div>
-                <ul className="mt-5 flex flex-col gap-2">
-                    <li>
+                <List className="mt-5 flex flex-col gap-2" style={{maxHeight: '100%', overflow: 'auto'}}>
+                    <ListItem disablePadding>
                         <Link href="/panel/12" >
                             <div className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
                                 <div className="flex justify-between">
@@ -34,7 +36,7 @@ export default function RootLayout({children}) {
                                             <h2 className="font-bold text-[1rem] text-textGray">
                                                 MyBusiness.xlsx
                                             </h2>
-                                            <span className="ml-2 text-[#8083A3] text-[0.8rem]">
+                                            <span className="ml-2 text-[#8083A3] text-[0.7rem]">
                                           11:52 AM
                                               </span>
                                         </div>
@@ -52,10 +54,9 @@ export default function RootLayout({children}) {
                                 </div>
 
                             </div>
-
                         </Link>
-                    </li>
-                    <li>
+                    </ListItem>
+                    <ListItem disablePadding>
                         <Link href="/panel/12" >
                             <div className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
                                 <div className="flex justify-between">
@@ -72,7 +73,7 @@ export default function RootLayout({children}) {
                                             <h2 className="font-bold text-[1rem] text-textGray">
                                                 MyBusiness.xlsx
                                             </h2>
-                                            <span className="ml-2 text-[#8083A3] text-[0.8rem]">
+                                            <span className="ml-2 text-[#8083A3] text-[0.7rem]">
                                           11:52 AM
                                               </span>
                                         </div>
@@ -90,10 +91,9 @@ export default function RootLayout({children}) {
                                 </div>
 
                             </div>
-
                         </Link>
-                    </li>
-                    <li>
+                    </ListItem>
+                    <ListItem disablePadding>
                         <Link href="/panel/12" >
                             <div className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
                                 <div className="flex justify-between">
@@ -110,7 +110,7 @@ export default function RootLayout({children}) {
                                             <h2 className="font-bold text-[1rem] text-textGray">
                                                 MyBusiness.xlsx
                                             </h2>
-                                            <span className="ml-2 text-[#8083A3] text-[0.8rem]">
+                                            <span className="ml-2 text-[#8083A3] text-[0.7rem]">
                                           11:52 AM
                                               </span>
                                         </div>
@@ -128,10 +128,9 @@ export default function RootLayout({children}) {
                                 </div>
 
                             </div>
-
                         </Link>
-                    </li>
-                    <li>
+                    </ListItem>
+                    <ListItem disablePadding>
                         <Link href="/panel/12" >
                             <div className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
                                 <div className="flex justify-between">
@@ -148,7 +147,7 @@ export default function RootLayout({children}) {
                                             <h2 className="font-bold text-[1rem] text-textGray">
                                                 MyBusiness.xlsx
                                             </h2>
-                                            <span className="ml-2 text-[#8083A3] text-[0.8rem]">
+                                            <span className="ml-2 text-[#8083A3] text-[0.7rem]">
                                           11:52 AM
                                               </span>
                                         </div>
@@ -166,12 +165,122 @@ export default function RootLayout({children}) {
                                 </div>
 
                             </div>
-
                         </Link>
-                    </li>
-                </ul>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <Link href="/panel/12" >
+                            <div className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
+                                <div className="flex justify-between">
+                                    <div className="w-[20%] flex justify-center items-start">
+                                        <div className="w-[70%]">
+                                            <Image src="/xlsm.svg" alt="costumer" width={0}
+                                                   height={0}
+                                                   sizes="100vw"
+                                                   style={{width: '100%', height: 'auto'}}/>
+                                        </div>
+                                    </div>
+                                    <div className="w-[60%]">
+                                        <div className="flex items-center">
+                                            <h2 className="font-bold text-[1rem] text-textGray">
+                                                MyBusiness.xlsx
+                                            </h2>
+                                            <span className="ml-2 text-[#8083A3] text-[0.7rem]">
+                                          11:52 AM
+                                              </span>
+                                        </div>
+                                        <div className="">
+                                            <p className="text-[#8083A3] text-[0.8rem]">
+                                                Lorem Ipsum is simply dummy text of the printing
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="mt-1 w-[15%] flex justify-center items-start">
+                                        <span className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
+                                            ...
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </Link>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <Link href="/panel/12" >
+                            <div className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
+                                <div className="flex justify-between">
+                                    <div className="w-[20%] flex justify-center items-start">
+                                        <div className="w-[70%]">
+                                            <Image src="/xlsm.svg" alt="costumer" width={0}
+                                                   height={0}
+                                                   sizes="100vw"
+                                                   style={{width: '100%', height: 'auto'}}/>
+                                        </div>
+                                    </div>
+                                    <div className="w-[60%]">
+                                        <div className="flex items-center">
+                                            <h2 className="font-bold text-[1rem] text-textGray">
+                                                MyBusiness.xlsx
+                                            </h2>
+                                            <span className="ml-2 text-[#8083A3] text-[0.7rem]">
+                                          11:52 AM
+                                              </span>
+                                        </div>
+                                        <div className="">
+                                            <p className="text-[#8083A3] text-[0.8rem]">
+                                                Lorem Ipsum is simply dummy text of the printing
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="mt-1 w-[15%] flex justify-center items-start">
+                                        <span className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
+                                            ...
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </Link>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <Link href="/panel/12" >
+                            <div className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
+                                <div className="flex justify-between">
+                                    <div className="w-[20%] flex justify-center items-start">
+                                        <div className="w-[70%]">
+                                            <Image src="/xlsm.svg" alt="costumer" width={0}
+                                                   height={0}
+                                                   sizes="100vw"
+                                                   style={{width: '100%', height: 'auto'}}/>
+                                        </div>
+                                    </div>
+                                    <div className="w-[60%]">
+                                        <div className="flex items-center">
+                                            <h2 className="font-bold text-[1rem] text-textGray">
+                                                MyBusiness.xlsx
+                                            </h2>
+                                            <span className="ml-2 text-[#8083A3] text-[0.7rem]">
+                                          11:52 AM
+                                              </span>
+                                        </div>
+                                        <div className="">
+                                            <p className="text-[#8083A3] text-[0.8rem]">
+                                                Lorem Ipsum is simply dummy text of the printing
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="mt-1 w-[15%] flex justify-center items-start">
+                                        <span className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
+                                            ...
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </Link>
+                    </ListItem>
+                </List>
             </div>
-            <div className="main w-[70%]">
+            <div className="overflow-hidden  main w-[70%]">
                 {children}
             </div>
         </div>
