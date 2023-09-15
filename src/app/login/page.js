@@ -5,7 +5,7 @@ const Login = () => {
     // Replace with your Google OAuth 2.0 client ID and redirect URI
     const clientId =
       "678612018769-t6up75qeqummcqipijeni9spmakf11pd.apps.googleusercontent.com";
-    const redirectUri = "http://localhost:3000";
+    const redirectUri = "http://localhost:3000/redirect";
     const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email%20profile`;
 
     window.location.href = authUrl;
@@ -16,19 +16,20 @@ const Login = () => {
       <body suppressHydrationWarning={true} className="max-h-screen">
         <section className="bg-gray-100 md:bg-[#f9f9f9] min-h-screen flex items-center justify-center">
           <div className="flex-col bg-gray-100 p-5 rounded-2xl md:shadow-lg w-full items-center md:w-3/5 flex-col flex-col md:flex-col 	">
-            <div className="flex flex-col  items-center m-10">
+           
+
+            <div className="flex flex-col md:flex-row mb-7">
+              <div className="w-full md:w-1/2 px-5 flex flex-col justify-center items-center rounded-r-[48px]">
+              <div className="flex flex-col  items-center m-10">
               <Image
                 src="logo.svg"
                 alt="login image"
                 width={0}
                 height={0}
                 sizes="100vw"
-                style={{ width: "40%", height: "auto" }}
+                style={{ width: "100%", height: "auto" }}
               />
             </div>
-
-            <div className="flex flex-col md:flex-row mb-7">
-              <div className="w-full md:w-1/2 px-5 flex flex-col justify-center items-center rounded-r-[48px]">
                 <h2 className=" text-3xl  md:text-2xl lg:text-3xl font-bold text-[#333333] font-inter mb-6 sm:mb-8 md:mb-10 lg:mb- xl:mb-20 text-center">
                   <span>Welcome</span> to
                   <br />
