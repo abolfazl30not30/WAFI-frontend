@@ -2,7 +2,10 @@ import Image from 'next/image'
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="h-screen flex justify-center items-center">
+      <span className="text-textGray bg-neutral-200 rounded-3xl px-3 py-2">
+        Select a chat to start messaging
+      </span>
     </main>
   )
 }
