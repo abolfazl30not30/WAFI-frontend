@@ -2,20 +2,21 @@
 // Redirect.js
 import React, { useEffect } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 const Redirect = () => {
-    const clientId =
+  const clientId =
     "678612018769-t6up75qeqummcqipijeni9spmakf11pd.apps.googleusercontent.com";
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const code = searchParams.get("code"); // Get the code from the URL query parameters
-    
 
     if (code) {
       const serverEndpoint = "YOUR_SERVER_ENDPOINT"; // Replace with your server endpoint
 
       // Send the code to your server to exchange for an access token and user information
-      axios.post(serverEndpoint, { code,clientId })
+      axios
+        .post(serverEndpoint, { code, clientId })
         .then((response) => {
           // If the authentication is successful, you can redirect to the chat page
           if (response.data.success) {
@@ -33,8 +34,16 @@ const Redirect = () => {
   }, []);
 
   return (
-    <div className="flex content-center item-center">
-      <h1>Loading...</h1>
+    <div className="flex flex-col justify-center items-center h-screen">
+      <Image
+        src="Confused.svg"
+        alt="login image"
+        width={0}
+        height={0}
+        sizes="100vw"
+        style={{ width: "20%", height: "auto" }}
+      />
+      <h1 className="font-extrabold">Loading...</h1>
     </div>
   );
 };
