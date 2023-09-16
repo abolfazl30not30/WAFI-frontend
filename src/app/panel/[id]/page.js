@@ -3,8 +3,19 @@ import Image from 'next/image'
 import {Scrollbars} from 'react-custom-scrollbars';
 import {usePathname} from "next/navigation";
 import {AiOutlinePaperClip} from "react-icons/ai"
+import { useSelector, useDispatch } from 'react-redux'
+import { toggleMenu } from '../../../redux/sidebar/sidebarSlice'
 export default function Home() {
     const pathname = usePathname()
+
+    const isOpen = useSelector((state) => state.sidebar.isOpen)
+    const dispatch = useDispatch()
+
+    const handleBack = () =>{
+        if(window.innerWidth < 768){
+            dispatch(toggleMenu())
+        }
+    }
 
     const renderView = ({style, ...reset}) => {
         const customStyle = {
@@ -47,10 +58,10 @@ export default function Home() {
     };
 
     return (
-        <div className="h-screen flex flex-col justify-between">
-            <header className="py-7 px-10 flex justify-between items-center border-b  border-b-1 border-b-neutral-300">
+        <div className="h-screen w-full flex flex-col justify-between">
+            <header className="py-7 px-5 md:px-10 flex justify-between items-center border-b  border-b-1 border-b-neutral-300">
                 <div className="flex items-center">
-                    <button
+                    <button onClick={handleBack}
                         className="hover:bg-[#EAFFF6] px-4 py-[0.7rem] rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">
                         <div className="w-2">
                             <Image src="/back.svg" alt="costumer" width={0}
@@ -59,11 +70,11 @@ export default function Home() {
                                    style={{width: '100%', height: 'auto'}}/>
                         </div>
                     </button>
-                    <div className="ml-10">
+                    <div className="mx-4 md:mx-10">
                         <h2 className="font-bold text-[1rem] text-textGray">
                             MyBusiness.xlsx
                         </h2>
-                        <p className="text-[#8083A3] text-[0.8rem]">
+                        <p className="hidden md:block text-[#8083A3] text-[0.8rem]">
                             Lorem Ipsum is simply dummy text of the printing
                         </p>
                     </div>
@@ -102,6 +113,7 @@ export default function Home() {
                     </button>
                 </div>
             </header>
+
             <Scrollbars autoHide
                         className="scroll-bar"
                         autoHideTimeout={500}
@@ -119,7 +131,7 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="flex justify-end">
-                    <div className="flex flex-row-reverse mx-8 my-5 w-[50%]">
+                    <div className="flex flex-row-reverse mx-8 my-5 w-[80%] md:w-[50%]">
                         <div className="mx-2">
                             <div className="w-[2rem] rounded-[0.5rem]">
                                 <Image src="/img.png" alt="costumer" width={0}
@@ -152,7 +164,7 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="flex ">
-                    <div className="flex mx-8 my-5 w-[50%]">
+                    <div className="flex mx-8 my-5 w-[80%] md:w-[50%]">
                         <div className="mx-2">
                             <div
                                 className="hover:bg-[#EAFFF6] bg-mainGreen px-1 py-[0.3rem] rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">
@@ -188,7 +200,7 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="flex justify-end">
-                    <div className="flex flex-row-reverse mx-8 my-5 w-[50%]">
+                    <div className="flex flex-row-reverse mx-8 my-5 w-[80%] md:w-[50%]">
                         <div className="mx-2">
                             <div className="w-[2rem] rounded-[0.5rem]">
                                 <Image src="/img.png" alt="costumer" width={0}
@@ -221,10 +233,10 @@ export default function Home() {
                     </div>
                 </div>
             </Scrollbars>
-            <div className="py-3 px-10 flex justify-between items-center border-t  border-t-1 border-t-neutral-300">
+            <div className="py-3 px-5 md:px-10 flex justify-between items-center border-t  border-t-1 border-t-neutral-300">
                 <div className="w-[80%]">
                     <textarea placeholder="Type to add your message..."
-                              className="text-scroll h-14 w-full focus:outline-none py-5 focus:border-none"/>
+                              className="text-scroll  w-full focus:outline-none py-5 focus:border-none"/>
                 </div>
                 <div className="flex gap-4 items-center justify-between">
                     <button>

@@ -3,8 +3,34 @@ import Link from "next/link";
 import {usePathname} from 'next/navigation'
 import Image from "next/image";
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useSelector, useDispatch } from 'react-redux'
+import { toggleMenu } from '../../redux/sidebar/sidebarSlice'
+import {useEffect, useState} from "react";
 
 export default function RootLayout({children}) {
+
+    const isOpen = useSelector((state) => state.sidebar.isOpen)
+    const dispatch = useDispatch()
+    const [menuStyle,setMenuStyle] = useState({
+        display:'block'
+    })
+    const [chatStyle,setChatStyle] = useState({
+        display:'block'
+    })
+    useEffect(()=>{
+        if(window.innerWidth > 768){
+            setMenuStyle({display:'block'})
+            setChatStyle({display: 'block'})
+        }else {
+            if(isOpen){
+                setMenuStyle({display:'block'})
+                setChatStyle({display: 'none'})
+            }else {
+                setMenuStyle({display:'none'})
+                setChatStyle({display: 'block'})
+            }
+        }
+    },[isOpen])
 
     const pathname = usePathname()
     const renderView = ({ style, ...reset }) => {
@@ -47,16 +73,21 @@ export default function RootLayout({children}) {
         return <div style={{ ...style, ...thumbStyle }} {...reset} />;
     };
 
+    const handleLink = () =>{
+        if(window.innerWidth < 768){
+            dispatch(toggleMenu())
+        }
+    }
+
     return (
-        <div className="flex">
-            <div className="overflow-hidden h-screen w-[25%] p-5 pb-20  flex-col border border-solid border-1 border-neutral-300">
+        <div className="md:flex">
+            <div className="overflow-hidden h-screen w-full md:w-[32%] p-5 pb-20  border border-solid border-1 border-neutral-300" style={menuStyle}>
                 <div className="m-2">
                     <button
                         className="text-center w-full py-4 border border-solid border-1 border-neutral-300 rounded hover:bg-mainGreen hover-border-none">
                         + New chat
                     </button>
                 </div>
-
                 <Scrollbars autoHide
                             className="scroll-bar"
                             autoHideTimeout={500}
@@ -67,7 +98,7 @@ export default function RootLayout({children}) {
                             renderTrackVertical={renderTrackVertical}>
                     <ul className="overflow-hidden mt-5 flex flex-col gap-2">
                         <li>
-                            <Link href="/panel/12">
+                            <Link href="/panel/12"  onClick={handleLink}>
                                 <div
                                     className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
                                     <div className="flex justify-between">
@@ -373,7 +404,7 @@ export default function RootLayout({children}) {
                     </ul>
                 </Scrollbars>
             </div>
-            <div className="main w-[75%]">
+            <div className="main md:w-full md:w-[78%]" style={chatStyle}>
                 {children}
             </div>
         </div>
