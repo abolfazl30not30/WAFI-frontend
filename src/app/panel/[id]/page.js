@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import {Scrollbars} from 'react-custom-scrollbars';
 import {usePathname} from "next/navigation";
-
+import {AiOutlinePaperClip} from "react-icons/ai"
 export default function Home() {
     const pathname = usePathname()
 
@@ -236,12 +236,7 @@ export default function Home() {
                         </div>
                     </button>
                     <button>
-                        <div className="w-4">
-                            <Image src="/add.svg" alt="costumer" width={0}
-                                   height={0}
-                                   sizes="100vw"
-                                   style={{width: '100%', height: 'auto'}}/>
-                        </div>
+                            <AiOutlinePaperClip className="text-[#C9C9C9] text-[1.6rem]"/>
                     </button>
                     <button
                         className="hover:bg-[#EAFFF6] bg-mainGreen px-3 py-3 rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">
