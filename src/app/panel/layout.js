@@ -81,7 +81,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="w-[60%]">
                                             <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
+                                                <h2 className="font-bold text-[0.9rem] text-textGray">
                                                     MyBusiness.xlsx
                                                 </h2>
                                                 <span className="ml-2 text-[#8083A3] text-[0.7rem]">
@@ -119,7 +119,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="w-[60%]">
                                             <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
+                                                <h2 className="font-bold text-[0.9rem] text-textGray">
                                                     MyBusiness.xlsx
                                                 </h2>
                                                 <span className="ml-2 text-[#8083A3] text-[0.7rem]">

@@ -110,11 +110,148 @@ export default function Home() {
                         renderThumbHorizontal={renderThumbHorizontal}
                         renderThumbVertical={renderThumbVertical}
                         renderTrackVertical={renderTrackVertical}>
+                <div className="flex justify-center">
+                    <div className="w-[17%] rounded-[0.5rem]">
+                        <Image src="/Animations/Wink.svg" alt="costumer" width={0}
+                               height={0}
+                               sizes="100vw"
+                               style={{width: '100%', height: 'auto', objectFit: "cover"}}/>
+                    </div>
+                </div>
+                <div className="flex justify-end">
+                    <div className="flex flex-row-reverse mx-8 my-5 w-[50%]">
+                        <div className="mx-2">
+                            <div className="w-[2rem] rounded-[0.5rem]">
+                                <Image src="/img.png" alt="costumer" width={0}
+                                       height={0}
+                                       sizes="100vw"
+                                       style={{width: '100%', height: 'auto', objectFit: "cover"}}/>
+                            </div>
+                        </div>
+                        <div>
+                            <div className="flex flex-row-reverse items-center">
+                                <h2 className="font-bold text-[0.9rem] text-textGray">
+                                    Robert
+                                </h2>
+                                <span className="mx-2 text-[#8083A3] text-[0.7rem]">
+                                    11:52 AM</span>
+                            </div>
+                            <div className="mt-2">
+                                <p className="font-medium text-textGray  bg-mainGreen rounded-xl rounded-se-none p-3 bg-[] text-[0.8rem]">
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing
+                                    .Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex ">
+                    <div className="flex mx-8 my-5 w-[50%]">
+                        <div className="mx-2">
+                            <div
+                                className="hover:bg-[#EAFFF6] bg-mainGreen px-1 py-[0.3rem] rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">
+                                <div className="w-6">
+                                    <Image src="/smallHead.svg" alt="costumer" width={0}
+                                           height={0}
+                                           sizes="100vw"
+                                           style={{width: '100%', height: 'auto'}}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div className="flex  items-center">
+                                <h2 className="font-bold text-[0.9rem] text-textGray">
+                                    Robert
+                                </h2>
+                                <span className="mx-2 text-[#8083A3] text-[0.7rem]">
+                                    11:52 AM</span>
+                            </div>
+                            <div className="mt-2">
+                                <p className="font-medium text-textGray bg-[#F3F4F9]  rounded-xl rounded-ss-none p-3 bg-[] text-[0.8rem]">
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing
+                                    .Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex justify-end">
+                    <div className="flex flex-row-reverse mx-8 my-5 w-[50%]">
+                        <div className="mx-2">
+                            <div className="w-[2rem] rounded-[0.5rem]">
+                                <Image src="/img.png" alt="costumer" width={0}
+                                       height={0}
+                                       sizes="100vw"
+                                       style={{width: '100%', height: 'auto', objectFit: "cover"}}/>
+                            </div>
+                        </div>
+                        <div>
+                            <div className="flex flex-row-reverse items-center">
+                                <h2 className="font-bold text-[0.9rem] text-textGray">
+                                    Robert
+                                </h2>
+                                <span className="mx-2 text-[#8083A3] text-[0.7rem]">
+                                    11:52 AM</span>
+                            </div>
+                            <div className="mt-2">
+                                <p className="font-medium text-textGray  bg-mainGreen rounded-xl rounded-se-none p-3 bg-[] text-[0.8rem]">
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing
+                                    .Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                    Lorem Ipsum is simply dummy text of the printing.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </Scrollbars>
             <div className="py-3 px-10 flex justify-between items-center border-t  border-t-1 border-t-neutral-300">
                 <div className="w-[80%]">
                     <textarea placeholder="Type to add your message..."
                               className="text-scroll h-14 w-full focus:outline-none py-5 focus:border-none"/>
+                </div>
+                <div className="flex gap-4 items-center justify-between">
+                    <button>
+                        <div className="w-5">
+                            <Image src="/emoji.svg" alt="costumer" width={0}
+                                   height={0}
+                                   sizes="100vw"
+                                   style={{width: '100%', height: 'auto'}}/>
+                        </div>
+                    </button>
+                    <button>
+                        <div className="w-4">
+                            <Image src="/add.svg" alt="costumer" width={0}
+                                   height={0}
+                                   sizes="100vw"
+                                   style={{width: '100%', height: 'auto'}}/>
+                        </div>
+                    </button>
+                    <button
+                        className="hover:bg-[#EAFFF6] bg-mainGreen px-3 py-3 rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">
+                        <div className="w-6">
+                            <Image src="/send.svg" alt="costumer" width={0}
+                                   height={0}
+                                   sizes="100vw"
+                                   style={{width: '100%', height: 'auto'}}/>
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>
