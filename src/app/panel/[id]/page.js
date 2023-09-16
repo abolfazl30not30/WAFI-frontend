@@ -1,8 +1,10 @@
 "use client"
 import Image from 'next/image'
 import {Scrollbars} from 'react-custom-scrollbars';
+import {usePathname} from "next/navigation";
 
 export default function Home() {
+    const pathname = usePathname()
 
     const renderView = ({style, ...reset}) => {
         const customStyle = {
@@ -100,17 +102,15 @@ export default function Home() {
                     </button>
                 </div>
             </header>
-            <div className="">
-                <Scrollbars autoHide
-                            className="scroll-bar"
-                            autoHideTimeout={500}
-                            autoHideDuration={200}
-                            renderView={renderView}
-                            renderThumbHorizontal={renderThumbHorizontal}
-                            renderThumbVertical={renderThumbVertical}
-                            renderTrackVertical={renderTrackVertical}>
-                </Scrollbars>
-            </div>
+            <Scrollbars autoHide
+                        className="scroll-bar"
+                        autoHideTimeout={500}
+                        autoHideDuration={200}
+                        renderView={renderView}
+                        renderThumbHorizontal={renderThumbHorizontal}
+                        renderThumbVertical={renderThumbVertical}
+                        renderTrackVertical={renderTrackVertical}>
+            </Scrollbars>
             <div className="py-3 px-10 flex justify-between items-center border-t  border-t-1 border-t-neutral-300">
                 <div className="w-[80%]">
                     <textarea placeholder="Type to add your message..."
