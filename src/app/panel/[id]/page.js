@@ -5,6 +5,8 @@ import {usePathname} from "next/navigation";
 import {AiOutlinePaperClip} from "react-icons/ai"
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleMenu } from '../../../redux/sidebar/sidebarSlice'
+import { AudioRecorder } from 'react-audio-voice-recorder';
+
 export default function Home() {
     const pathname = usePathname()
 
@@ -55,6 +57,13 @@ export default function Home() {
             backgroundColor: '#F1F2F6',
         };
         return <div style={{...style, ...thumbStyle}} {...reset} />;
+    };
+    const addAudioElement = (blob) => {
+        const url = URL.createObjectURL(blob);
+        const audio = document.createElement('audio');
+        console.log(url)
+        audio.src = url;
+        audio.controls = true;
     };
 
     return (
@@ -239,14 +248,17 @@ export default function Home() {
                               className="text-scroll  w-full focus:outline-none py-5 focus:border-none"/>
                 </div>
                 <div className="flex gap-4 items-center justify-between">
-                    <button>
-                        <div className="w-5">
-                            <Image src="/emoji.svg" alt="costumer" width={0}
-                                   height={0}
-                                   sizes="100vw"
-                                   style={{width: '100%', height: 'auto'}}/>
-                        </div>
-                    </button>
+                    <AudioRecorder
+                        onRecordingComplete={addAudioElement}
+                        audioTrackConstraints={{
+                            noiseSuppression: true,
+                            echoCancellation: true,
+                        }}
+                        onNotAllowedOrFound={(err) => console.table(err)}
+                        downloadFileExtension="webm"
+                        mediaRecorderOptions={{
+                            audioBitsPerSecond: 128000,
+                        }}/>
                     <button>
                             <AiOutlinePaperClip className="text-[#C9C9C9] text-[1.6rem]"/>
                     </button>
