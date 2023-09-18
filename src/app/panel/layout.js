@@ -59,10 +59,17 @@ export default function RootLayout({children}) {
         event.preventDefault();
     };
 
-    const handleUpload = () => {
+    const handleUpload = async () => {
+        var formData = new FormData();
+        formData.append("data", selectedFiles[0]);
+        import axios from "axios";
+        axios.post('http://64.226.125.111:8000/bots/create', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
         notify()
         handleClose();
-
     };
 
     const isOpen = useSelector((state) => state.sidebar.isOpen)
@@ -499,8 +506,7 @@ export default function RootLayout({children}) {
                                             onClick={handleUpload}
                                             variant="outlined"
                                             color="success"
-                                            sx={{ mt: 2  }}
-                                        >
+                                            sx={{ mt: 2  }}>
                                             Send Files
                                         </Button>
 
