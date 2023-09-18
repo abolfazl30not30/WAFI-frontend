@@ -27,3 +27,24 @@ body {
 
 /* Define other global styles */
 /* ... */
+@media (max-width: 600px) {
+	#upload {
+	  maxWidth: 90%;
+	  margin: 100px auto;
+	}
+  }
+  
+  @media (min-width: 601px) and (max-width: 1024px) {
+	#upload {
+	  maxWidth: 60%;
+	  margin: 150px auto;
+	}
+  }
+  
+  @media (min-width: 1025px) {
+	#upload {
+	  maxWidth: 30%;
+	  margin: 200px auto;
+	}
+  }
+  

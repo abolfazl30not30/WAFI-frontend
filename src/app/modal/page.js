@@ -5,11 +5,17 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
-
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+  import DoneAllIcon from '@mui/icons-material/DoneAll';
 function MyComponent() {
   const [open, setOpen] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
-
+  const notify = () => {
+    toast.success("Success Notification !", {
+      position: toast.POSITION.TOP_CENTER
+    });
+  }
   const handleAddFile = (event) => {
     const files = event.target.files;
     const updatedSelectedFiles = [...selectedFiles];
@@ -45,7 +51,9 @@ function MyComponent() {
   };
 
   const handleUpload = () => {
+    notify()
     handleClose();
+    
   };
 
   return (
@@ -66,49 +74,50 @@ function MyComponent() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: {
-              xss: "40%",
-              xs: "100%",
-              lg: "40%",
-              md: "40%",
-              sm: "70%",
-            },
-
-            maxHeight: "80vh",
-            bgcolor: "#d9dbde",
-            borderRadius: "22px",
+           
+width:'100%',
+height:'100vh',
+            maxHeight: "100vh",
+            bgcolor: "#fcfcfa",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.5)",
             p: 4,
             textAlign: "center",
+            backgroundImage: 'url("line-stripe-pattern-on-white-wavy-background-abstract-modern-background-futuristic-graphic-energy-sound-waves-technology-concept-design-vector.jpg")', 
+            backgroundSize: 'cover', 
+            backgroundRepeat: 'no-repeat'
           }}
         >
           {selectedFiles.length > 0 ? (
-            <div>
+            <div className="bg-[#f7f6f2] border-2 border-[#00FFB6] sm:w-full md:w-2/5 lg:w-2/6 mx-auto rounded-3xl">
               <Typography id="modal-description" sx={{ mb: 2 }}>
                 Selected Files:
               </Typography>
               <ul>
                 {selectedFiles.map((file, index) => (
-                  <li className="text-[#8f9194]" key={index}>
-                    {file.name}
+                  <li className="text-[#4a4646]" key={index}>
+                  <DoneAllIcon/> {file.name}
                   </li>
                 ))}
               </ul>
+              <div className="mb-5">
               <Button
                 onClick={handleUpload}
                 variant="outlined"
-                color="primary"
-                sx={{ mt: 2 }}
+                color="success"
+                sx={{ mt: 2  }}
               >
                 Send Files
               </Button>
+              
               <Button
                 onClick={() => {
                   setSelectedFiles([]);
                 }}
                 variant="outlined"
-                color="secondary"
-                sx={{ mt: 2, ml: 2 }}
+                color="error"
+                
+                
+                sx={{ mt: 2, backgroundColor: "#f72a0f", color: "#f72a0f" }}
               >
                 Clear Files
               </Button>
@@ -120,34 +129,33 @@ function MyComponent() {
                 id="file-input"
                 multiple
               />
-              <label htmlFor="file-input">
-                <Button
-                  component="span"
-                  variant="outlined"
-                  color="primary"
-                  sx={{ mt: 2, ml: 2 }}
-                >
-                  Upload Files
-                </Button>
+            
+              </div>  <label htmlFor="file-input">
+              <Button
+  component="span"
+  variant="outlined"
+  color="primary"
+  sx={{ mt: 2, backgroundColor: "#00FFB6",marginBottom:'10px',width:'80%' }}
+>
+  Upload Another Files
+</Button>
+
               </label>
             </div>
           ) : (
-            <div>
+            <div className="flex justify-center">
               <div
                 onDrop={handleFileDrop}
                 onDragOver={handleDragOver}
+                className=" rounded-md p-5 cursor-pointer mb-5 w-11/12 md:w-2/5 mx-auto md:mx-0  bg-[#f7f6f2] relative border-2 border-[#00FFB6] mt-10"
                 style={{
-                  border: "2px dashed #ccc",
-                  borderRadius: "4px",
-                  padding: "20px",
-                  cursor: "pointer",
-                  marginBottom: "20px",
-                  width: "80%",
-                  height: "40vh",
-                  margin: "0 auto",
-                  backgroundColor: "#00FFB6",
-                  position: "relative",
+                
+    // maxWidth: "30%", 
+    height: "45vh",
+   
+    
                 }}
+                
               >
                 <Image
                   src="csv.svg"
@@ -163,23 +171,12 @@ function MyComponent() {
                     left: "-10%",
                   }}
                 />
-                <Typography id="modal-description" sx={{ mb: 2 }}>
-                  Drag & Drop
-                </Typography>
-                <input
-                  type="file"
-                  accept=".jpg, .jpeg, .png, .pdf"
-                  onChange={handleFileChange}
-                  style={{ display: "none" }}
-                  id="file-input"
-                  multiple // Allow multiple file selection
-                />
-                <label htmlFor="file-input">
+                 <label htmlFor="file-input">
                   <Button
                     component="span"
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 2 }}
+                    sx={{ mt: 2,   marginBottom:"20px" ,borderRadius:'100%',    boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.2)" // Box shadow
+
+                  }}
                   >
                     <Image
                       src="upload.svg"
@@ -189,14 +186,28 @@ function MyComponent() {
                       height={0}
                       sizes="100vw"
                       style={{
-                        width: "15%",
+                        width: "40px",
                         height: "auto",
                         marginRight: "2px",
                       }}
                     />
-                    Upload Files
                   </Button>
                 </label>
+                <Typography id="modal-description" sx={{ mb: 2, color:'#475467' }}>
+                <span className="text-[#00FFB6] font-extrabold ">Click to update</span>   or drag and drop
+                </Typography>
+                <Typography id="modal-description" sx={{ mb: 2,color:'#475467' }}>
+                  SVG,PNG,JPG or GIF (max. 800 x 400px)
+                </Typography>
+                <input
+                  type="file"
+                  accept=".jpg, .jpeg, .png, .pdf"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                  id="file-input"
+                  multiple // Allow multiple file selection
+                />
+               
                 <Image
                   src="pdf.svg"
                   alt="login image"
@@ -225,11 +236,29 @@ function MyComponent() {
                     right: "90%",
                   }}
                 />
+                <Image
+                      src="File.svg"
+                      alt="login image"
+                      variant="contained"
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      style={{
+                        width: "8vw",
+                        height: "auto",
+                        // marginLeft: "200px",
+                        position: "absolute",
+                    top: "200px",
+                    right: "4%",
+                      }}
+                    />
               </div>
             </div>
           )}
         </Box>
       </Modal>
+      <ToastContainer />
+      
     </div>
   );
 }
