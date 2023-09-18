@@ -530,7 +530,7 @@ export default function RootLayout({children}) {
                                             height: "45vh",
                                         }}>
                                         <Image
-                                            src="csv.svg"
+                                            src="/csv.svg"
                                             alt="login image"
                                             width={0}
                                             height={0}
@@ -551,7 +551,7 @@ export default function RootLayout({children}) {
                                                 }}
                                             >
                                                 <Image
-                                                    src="upload.svg"
+                                                    src="/upload.svg"
                                                     alt="login image"
                                                     variant="contained"
                                                     width={0}
@@ -581,7 +581,7 @@ export default function RootLayout({children}) {
                                         />
 
                                         <Image
-                                            src="pdf.svg"
+                                            src="/pdf.svg"
                                             alt="login image"
                                             width={0}
                                             height={0}
@@ -595,7 +595,7 @@ export default function RootLayout({children}) {
                                             }}
                                         />
                                         <Image
-                                            src="dock.svg"
+                                            src="/dock.svg"
                                             alt="login image"
                                             width={0}
                                             height={0}
@@ -609,7 +609,7 @@ export default function RootLayout({children}) {
                                             }}
                                         />
                                         <Image
-                                            src="File.svg"
+                                            src="/File.svg"
                                             alt="login image"
                                             variant="contained"
                                             width={0}
