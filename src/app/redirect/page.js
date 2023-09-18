@@ -12,17 +12,16 @@ const Redirect = () => {
     const code = searchParams.get("code"); // Get the code from the URL query parameters
 
     if (code) {
-      const serverEndpoint = "YOUR_SERVER_ENDPOINT"; // Replace with your server endpoint
+      const serverEndpoint = `http://64.226.125.111:8000/users/login/google?code=${code}`; // Replace with your server endpoint
 
       // Send the code to your server to exchange for an access token and user information
       axios
-        .post(serverEndpoint, { code, clientId })
+        .post(serverEndpoint)
         .then((response) => {
-          // If the authentication is successful, you can redirect to the chat page
-          if (response.data.success) {
-            window.location.href = "/chatpage"; // Replace with your chat page URL
+            console.log(response)
+          if (response.status === 200) {
+
           } else {
-            // Handle authentication failure
           }
         })
         .catch((error) => {

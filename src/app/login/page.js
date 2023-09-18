@@ -4,7 +4,8 @@ const Login = () => {
   const googleLogin = () => {
     // Replace with your Google OAuth 2.0 client ID and redirect URI
     const clientId =
-      "678612018769-t6up75qeqummcqipijeni9spmakf11pd.apps.googleusercontent.com";
+      "188888100839-1840iic8vn85kj85a28gqcn92262lblm.apps.googleusercontent.com";
+    const clientSecret = "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";
     const redirectUri = "http://localhost:3000/redirect";
     const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email%20profile`;
 
