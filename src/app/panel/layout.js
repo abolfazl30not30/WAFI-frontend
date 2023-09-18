@@ -60,14 +60,6 @@ export default function RootLayout({children}) {
     };
 
     const handleUpload = async () => {
-        var formData = new FormData();
-        formData.append("data", selectedFiles[0]);
-        import axios from "axios";
-        axios.post('http://64.226.125.111:8000/bots/create', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
         notify()
         handleClose();
     };
@@ -199,7 +191,7 @@ export default function RootLayout({children}) {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/panel/12">
+                            <Link href="/panel/12"  onClick={handleLink}>
                                 <div
                                     className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
                                     <div className="flex justify-between">
@@ -228,7 +220,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="mt-1 w-[15%] flex justify-center items-start">
                                         <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
+                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-[#ECEEF5] px-2 py-1 text-center rounded">
                                             ...
                                         </span>
                                         </div>
@@ -237,7 +229,7 @@ export default function RootLayout({children}) {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/panel/12">
+                            <Link href="/panel/12"  onClick={handleLink}>
                                 <div
                                     className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
                                     <div className="flex justify-between">
@@ -251,7 +243,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="w-[60%]">
                                             <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
+                                                <h2 className="font-bold text-[0.9rem] text-textGray">
                                                     MyBusiness.xlsx
                                                 </h2>
                                                 <span className="ml-2 text-[#8083A3] text-[0.7rem]">
@@ -266,7 +258,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="mt-1 w-[15%] flex justify-center items-start">
                                         <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
+                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-[#ECEEF5] px-2 py-1 text-center rounded">
                                             ...
                                         </span>
                                         </div>
@@ -275,7 +267,7 @@ export default function RootLayout({children}) {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/panel/12">
+                            <Link href="/panel/12"  onClick={handleLink}>
                                 <div
                                     className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
                                     <div className="flex justify-between">
@@ -289,7 +281,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="w-[60%]">
                                             <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
+                                                <h2 className="font-bold text-[0.9rem] text-textGray">
                                                     MyBusiness.xlsx
                                                 </h2>
                                                 <span className="ml-2 text-[#8083A3] text-[0.7rem]">
@@ -304,7 +296,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="mt-1 w-[15%] flex justify-center items-start">
                                         <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
+                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-[#ECEEF5] px-2 py-1 text-center rounded">
                                             ...
                                         </span>
                                         </div>
@@ -313,7 +305,7 @@ export default function RootLayout({children}) {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/panel/12">
+                            <Link href="/panel/12"  onClick={handleLink}>
                                 <div
                                     className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
                                     <div className="flex justify-between">
@@ -327,7 +319,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="w-[60%]">
                                             <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
+                                                <h2 className="font-bold text-[0.9rem] text-textGray">
                                                     MyBusiness.xlsx
                                                 </h2>
                                                 <span className="ml-2 text-[#8083A3] text-[0.7rem]">
@@ -342,7 +334,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="mt-1 w-[15%] flex justify-center items-start">
                                         <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
+                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-[#ECEEF5] px-2 py-1 text-center rounded">
                                             ...
                                         </span>
                                         </div>
@@ -351,7 +343,7 @@ export default function RootLayout({children}) {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/panel/12">
+                            <Link href="/panel/12"  onClick={handleLink}>
                                 <div
                                     className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
                                     <div className="flex justify-between">
@@ -365,7 +357,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="w-[60%]">
                                             <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
+                                                <h2 className="font-bold text-[0.9rem] text-textGray">
                                                     MyBusiness.xlsx
                                                 </h2>
                                                 <span className="ml-2 text-[#8083A3] text-[0.7rem]">
@@ -380,7 +372,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="mt-1 w-[15%] flex justify-center items-start">
                                         <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
+                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-[#ECEEF5] px-2 py-1 text-center rounded">
                                             ...
                                         </span>
                                         </div>
@@ -389,7 +381,7 @@ export default function RootLayout({children}) {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/panel/12">
+                            <Link href="/panel/12"  onClick={handleLink}>
                                 <div
                                     className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
                                     <div className="flex justify-between">
@@ -403,7 +395,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="w-[60%]">
                                             <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
+                                                <h2 className="font-bold text-[0.9rem] text-textGray">
                                                     MyBusiness.xlsx
                                                 </h2>
                                                 <span className="ml-2 text-[#8083A3] text-[0.7rem]">
@@ -418,7 +410,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="mt-1 w-[15%] flex justify-center items-start">
                                         <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
+                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-[#ECEEF5] px-2 py-1 text-center rounded">
                                             ...
                                         </span>
                                         </div>
@@ -427,7 +419,7 @@ export default function RootLayout({children}) {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/panel/12">
+                            <Link href="/panel/12"  onClick={handleLink}>
                                 <div
                                     className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
                                     <div className="flex justify-between">
@@ -441,7 +433,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="w-[60%]">
                                             <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
+                                                <h2 className="font-bold text-[0.9rem] text-textGray">
                                                     MyBusiness.xlsx
                                                 </h2>
                                                 <span className="ml-2 text-[#8083A3] text-[0.7rem]">
@@ -456,7 +448,7 @@ export default function RootLayout({children}) {
                                         </div>
                                         <div className="mt-1 w-[15%] flex justify-center items-start">
                                         <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
+                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-[#ECEEF5] px-2 py-1 text-center rounded">
                                             ...
                                         </span>
                                         </div>
