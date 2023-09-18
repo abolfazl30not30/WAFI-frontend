@@ -35,7 +35,6 @@ const Redirect = () => {
         .post(serverEndpoint)
         .then((response) => {
           if (response.status === 200) {
-              sessionStorage.setItem("authorization",response.data.access_token)
               router.push("/panel")
           } else {
               router.push("/login")
