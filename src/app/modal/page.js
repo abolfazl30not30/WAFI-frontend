@@ -74,17 +74,15 @@ function MyComponent() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-           
-width:'100%',
-height:'100vh',
+           width:'70%',
+
+height:'65vh',
             maxHeight: "100vh",
             bgcolor: "#fcfcfa",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.5)",
             p: 4,
             textAlign: "center",
-            backgroundImage: 'url("line-stripe-pattern-on-white-wavy-background-abstract-modern-background-futuristic-graphic-energy-sound-waves-technology-concept-design-vector.jpg")', 
-            backgroundSize: 'cover', 
-            backgroundRepeat: 'no-repeat'
+           
           }}
         >
           {selectedFiles.length > 0 ? (
