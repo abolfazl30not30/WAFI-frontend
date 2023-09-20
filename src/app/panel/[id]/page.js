@@ -11,8 +11,11 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import {useEffect,useRef} from "react";
 import "../../../style/spotLoading.css"
+import api from "@/hooks/api/api";
+import {useRouter} from "next/navigation";
 
 export default function Home({ params }) {
+    const router = useRouter()
     const pathname = usePathname()
     const scrollbars = useRef(null)
     const isOpen = useSelector((state) => state.sidebar.isOpen)
@@ -23,63 +26,74 @@ export default function Home({ params }) {
     const [chatHistory,setChatHistory] = useState([])
 
     const handleBack = () =>{
+        router.push('/panel')
         if(window.innerWidth < 768){
             dispatch(toggleMenu())
         }
     }
 
+    useEffect(() => {
+        scrollbars.current.scrollToBottom()
+    }, [chatHistory]);
+
+
     const getChats = async ()=>{
-        axios.get(`http://64.226.125.111:8000/chats/read/${params.id}`,{
-            headers: {
-                'Authorization': `Bearer ${window.sessionStorage.getItem("access_token")}`,
+        try {
+            const res = await api.get(`chats/read/${params.id}`)
+            setChat(res)
+            if(res.chat_history !== null){
+                setChatHistory(res?.chat_history)
             }
-        }).then((res)=>{
-            setChat(res.data)
-            setChatHistory(res.data.chat_memory)
-        }).catch((err)=>{
-            console.log(err)
-            toast.error("Has Error!!!", {
+        }catch (err){
+            toast.error("the connection has error !", {
                 position: toast.POSITION.TOP_CENTER
             });
-        })
+        }
     }
 
     useEffect(()=>{
         getChats()
     },[])
 
-    const handleSendMassage = () =>{
+    const addLoadingMassage = () =>{
+        let date = new Date().toJSON();
+        let updateChatHistory = [...chatHistory];
+        let chat = {
+            Human:{
+                date: date,
+                message:massage
+            },
+            AI: {
+                date: date,
+                message:<div className="mb-10"><span className="loader"></span></div>
+            },
+        }
+        updateChatHistory.push(chat)
+        setChatHistory(updateChatHistory)
+    }
+    const handleSendMassage = async () =>{
         setAILoading(true)
+
+        addLoadingMassage()
 
         const newMassage = massage
         setMassage("")
 
-        let updateChatHistory = [...chatHistory];
-        let chat = {
-            AI: <div><span className="loader"></span></div>,
-            Human: massage
-        }
-        updateChatHistory.push(chat)
-        setChatHistory(updateChatHistory)
-        scrollbars.current.scrollToBottom()
-
         let formData = new FormData()
         formData.append("audio","")
-        axios.post(`http://64.226.125.111:8000/chats/new_message?chat_id=${params.id}&input_type=text&output_type=audio&new_message=${newMassage}`, formData,{
-            headers: {
-                'Authorization': `Bearer ${window.sessionStorage.getItem("access_token")}`,
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then((res)=>{
+
+        try{
+            await api.postFile(`chats/new_message?chat_id=${params.id}&input_type=text&output_type=text&new_message=${newMassage}`,formData)
             getChats()
-        }).catch((err)=>{
+        }catch (err){
             toast.error("Has Error !", {
                 position: toast.POSITION.TOP_CENTER
             });
-        }).finally(()=>{
+        }finally {
             setAILoading(false)
             scrollbars.current.scrollToBottom()
-        });
+        }
+
     }
     const renderView = ({style, ...reset}) => {
         const customStyle = {
@@ -146,7 +160,7 @@ export default function Home({ params }) {
                     </button>
                     <div className="mx-4 md:mx-10">
                         <h2 className="font-bold text-[1rem] text-textGray">
-                            {chat?.chat_details?.Title}
+                            {chat?.chat?.Title}
                         </h2>
                         <p className="hidden md:block text-[#8083A3] text-[0.8rem]">
                             Lorem Ipsum is simply dummy text of the printing
@@ -225,11 +239,12 @@ export default function Home({ params }) {
                                                 Me
                                             </h2>
                                             <span className="mx-2 text-[#8083A3] text-[0.7rem]">
-                                    11:52 AM</span>
+                                               { massage.Human.date?.substring(11,16)}
+                                            </span>
                                         </div>
                                         <div className="mt-2">
                                             <p className="font-medium text-textGray  bg-mainGreen rounded-xl rounded-se-none p-3 bg-[] text-[0.8rem]">
-                                                {massage?.Human}
+                                                {massage?.Human?.message}
                                             </p>
                                         </div>
                                     </div>
@@ -254,11 +269,12 @@ export default function Home({ params }) {
                                                 Robot
                                             </h2>
                                             <span className="mx-2 text-[#8083A3] text-[0.7rem]">
-                                    11:52 AM</span>
+                                                { massage.AI.date?.substring(11,16)}
+                                            </span>
                                         </div>
                                         <div className="mt-2">
                                             <p className="flex justify-center font-medium text-textGray bg-[#F3F4F9]  rounded-xl rounded-ss-none p-3 bg-[] text-[0.8rem]">
-                                                {massage.AI}
+                                                {massage?.AI?.message}
                                             </p>
                                         </div>
                                     </div>

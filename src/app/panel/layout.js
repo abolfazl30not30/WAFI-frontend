@@ -16,9 +16,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import axios from "axios";
 import "../../style/spinnerLoaging.css"
+import api from "@/hooks/api/api";
 
 export default function RootLayout({children}) {
-    const access_token = useSelector((state) => state.auth.access_token)
     const router = useRouter()
 
     const [open, setOpen] = useState(false);
@@ -32,23 +32,20 @@ export default function RootLayout({children}) {
     }
 
     const getChats = async ()=>{
-        axios.get("http://64.226.125.111:8000/chats",{
-            headers: {
-                'Authorization': `Bearer ${window.sessionStorage.getItem("access_token")}`,
-            }
-        }).then((res)=>{
-            setChats(res.data)
-        }).catch((err)=>{
-            console.log(err)
-            toast.error("The upload was failed !", {
+        try {
+            const res = await api.get("chats")
+            setChats(res)
+        }catch (err){
+            toast.error("the connection has error !", {
                 position: toast.POSITION.TOP_CENTER
             });
-        })
+        }
     }
 
     useEffect(()=>{
         getChats()
     },[])
+
     const handleAddFile = (event) => {
         const files = event.target.files;
         const updatedSelectedFiles = [...selectedFiles];
@@ -87,23 +84,20 @@ export default function RootLayout({children}) {
         setUploadLoading(true)
         let formData = new FormData();
         formData.append("pdf", selectedFiles[0]);
-        console.log(selectedFiles[0].name)
-        axios.post(`http://64.226.125.111:8000/chats/create?title=${selectedFiles[0].name}`, formData, {
-            headers: {
-                'Authorization': `Bearer ${window.sessionStorage.getItem("access_token")}`,
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then((res)=>{
+        try {
+            const res = await api.postFile(`chats/create?title=${selectedFiles[0].name}`,formData)
             notify()
             handleClose();
-            router.push(`/panel/${res.data.ID}`)
-        }).catch((err)=>{
-            toast.error("The upload was failed !", {
+            getChats()
+            router.push(`/panel/${res.ID}`)
+        }catch (err){
+            console.log(err)
+            toast.error("the connection has error !", {
                 position: toast.POSITION.TOP_CENTER
             });
-        }).finally(()=>{
+        }finally {
             setUploadLoading(false)
-        });
+        }
     };
 
     const isOpen = useSelector((state) => state.sidebar.isOpen)
@@ -214,7 +208,7 @@ export default function RootLayout({children}) {
                                                         <h2 className="font-bold text-[0.9rem] text-textGray">
                                                             {chat.Title}
                                                         </h2>
-                                                        <span className="ml-2 text-[#8083A3] text-[0.7rem]">{chat.DateCreated.substring(14,19 )}</span>
+                                                        <span className="ml-2 text-[#8083A3] text-[0.7rem]">{chat.DateCreated.substring(11,16 )}</span>
                                                     </div>
                                                     <div className="">
                                                         <p className="text-[#8083A3] text-[0.8rem]">
