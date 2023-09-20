@@ -6,12 +6,15 @@ import {usePathname} from 'next/navigation'
 import {GiHamburgerMenu} from "react-icons/gi";
 import {useState} from "react";
 import {IoMdClose} from "react-icons/io";
+import {useSelector} from "react-redux";
 
 function Navbar() {
     const [isShowNavbar, setIsShowNavbar] = useState(false);
     const handleToggleNavbar = () => {
         setIsShowNavbar(!isShowNavbar)
     }
+
+    const access_token = useSelector((state) => state.auth.access_token)
 
     const pathname = usePathname()
     return (
@@ -52,7 +55,7 @@ function Navbar() {
                     </ul>
                 </div>
                 <div>
-                    <Link href={sessionStorage.getItem("authorization") ? "/panel" : "/login"}><button className="bg-[#00FFB6] hover:bg-[#11e0a6]  lg:px-4 px-3 py-2 rounded-full">MY ACCOUNT</button></Link>
+                    <Link href={access_token !== null ? "/panel" : "/login"}><button className="bg-[#00FFB6] hover:bg-[#11e0a6]  lg:px-4 px-3 py-2 rounded-full">MY ACCOUNT</button></Link>
                 </div>
                 <div className="md:hidden">
                     <button onClick={handleToggleNavbar} className="transition-all duration-900">

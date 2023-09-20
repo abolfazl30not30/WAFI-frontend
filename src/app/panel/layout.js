@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link";
-import {usePathname} from 'next/navigation'
+import {usePathname, useRouter} from 'next/navigation'
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleMenu } from '../../redux/sidebar/sidebarSlice'
@@ -14,17 +14,41 @@ import Image from "next/image";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import axios from "axios";
+import "../../style/spinnerLoaging.css"
 
 export default function RootLayout({children}) {
+    const access_token = useSelector((state) => state.auth.access_token)
+    const router = useRouter()
 
     const [open, setOpen] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [chats,setChats] = useState([])
+    const [uploadLoading, setUploadLoading] = useState(false)
     const notify = () => {
         toast.success("The file was sent successfully !", {
             position: toast.POSITION.TOP_CENTER
         });
     }
 
+    const getChats = async ()=>{
+        axios.get("http://64.226.125.111:8000/chats",{
+            headers: {
+                'Authorization': `Bearer ${window.sessionStorage.getItem("access_token")}`,
+            }
+        }).then((res)=>{
+            setChats(res.data)
+        }).catch((err)=>{
+            console.log(err)
+            toast.error("The upload was failed !", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        })
+    }
+
+    useEffect(()=>{
+        getChats()
+    },[])
     const handleAddFile = (event) => {
         const files = event.target.files;
         const updatedSelectedFiles = [...selectedFiles];
@@ -60,16 +84,28 @@ export default function RootLayout({children}) {
     };
 
     const handleUpload = async () => {
-        var formData = new FormData();
-        formData.append("data", selectedFiles[0]);
-        import axios from "axios";
-        axios.post('http://64.226.125.111:8000/bots/create', formData, {
+        setUploadLoading(true)
+        let formData = new FormData();
+        formData.append("pdf", selectedFiles[0]);
+        console.log(selectedFiles[0].name)
+        axios.post(`http://64.226.125.111:8000/chats/create?title=${selectedFiles[0].name}`, formData, {
             headers: {
+                'Authorization': `Bearer ${window.sessionStorage.getItem("access_token")}`,
                 'Content-Type': 'multipart/form-data'
             }
+        }).then((res)=>{
+            notify()
+            handleClose();
+            router.push(`/panel/${res.data.ID}`)
+        }).catch((err)=>{
+            toast.error("The upload was failed !", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }).finally(()=>{
+            setUploadLoading(false)
         });
-        notify()
-        handleClose();
+
+
     };
 
     const isOpen = useSelector((state) => state.sidebar.isOpen)
@@ -160,310 +196,46 @@ export default function RootLayout({children}) {
                             renderThumbVertical={renderThumbVertical}
                             renderTrackVertical={renderTrackVertical}>
                     <ul className="overflow-hidden mt-5 flex flex-col gap-2">
-                        <li>
-                            <Link href="/panel/12"  onClick={handleLink}>
-                                <div
-                                    className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
-                                    <div className="flex justify-between">
-                                        <div className="w-[20%] flex justify-center items-start">
-                                            <div className="w-[70%]">
-                                                <Image src="/xlsm.svg" alt="costumer" width={0}
-                                                       height={0}
-                                                       sizes="100vw"
-                                                       style={{width: '100%', height: 'auto'}}/>
-                                            </div>
-                                        </div>
-                                        <div className="w-[60%]">
-                                            <div className="flex items-center">
-                                                <h2 className="font-bold text-[0.9rem] text-textGray">
-                                                    MyBusiness.xlsx
-                                                </h2>
-                                                <span className="ml-2 text-[#8083A3] text-[0.7rem]">
-                                          11:52 AM
-                                              </span>
-                                            </div>
-                                            <div className="">
-                                                <p className="text-[#8083A3] text-[0.8rem]">
-                                                    Lorem Ipsum is simply dummy text of the printing
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="mt-1 w-[15%] flex justify-center items-start">
+                        {
+                            chats?.map((chat,index)=>(
+                                <li>
+                                    <Link href={`/panel/${chat.ID}`}  onClick={handleLink}>
+                                        <div
+                                            className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
+                                            <div className="flex justify-between">
+                                                <div className="w-[20%] flex justify-center items-start">
+                                                    <div className="w-[70%]">
+                                                        <Image src="/pdf.png" alt="costumer" width={0}
+                                                               height={0}
+                                                               sizes="100vw"
+                                                               style={{width: '100%', height: 'auto'}}/>
+                                                    </div>
+                                                </div>
+                                                <div className="w-[60%]">
+                                                    <div className="flex items-center">
+                                                        <h2 className="font-bold text-[0.9rem] text-textGray">
+                                                            {chat.Title}
+                                                        </h2>
+                                                        <span className="ml-2 text-[#8083A3] text-[0.7rem]">{chat.DateCreated.substring(14,19 )}</span>
+                                                    </div>
+                                                    <div className="">
+                                                        <p className="text-[#8083A3] text-[0.8rem]">
+                                                            Lorem Ipsum is simply dummy text of the printing
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div className="mt-1 w-[15%] flex justify-center items-start">
                                         <span
                                             className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-[#ECEEF5] px-2 py-1 text-center rounded">
                                             ...
                                         </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/panel/12">
-                                <div
-                                    className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
-                                    <div className="flex justify-between">
-                                        <div className="w-[20%] flex justify-center items-start">
-                                            <div className="w-[70%]">
-                                                <Image src="/xlsm.svg" alt="costumer" width={0}
-                                                       height={0}
-                                                       sizes="100vw"
-                                                       style={{width: '100%', height: 'auto'}}/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="w-[60%]">
-                                            <div className="flex items-center">
-                                                <h2 className="font-bold text-[0.9rem] text-textGray">
-                                                    MyBusiness.xlsx
-                                                </h2>
-                                                <span className="ml-2 text-[#8083A3] text-[0.7rem]">
-                                          11:52 AM
-                                              </span>
-                                            </div>
-                                            <div className="">
-                                                <p className="text-[#8083A3] text-[0.8rem]">
-                                                    Lorem Ipsum is simply dummy text of the printing
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="mt-1 w-[15%] flex justify-center items-start">
-                                        <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
-                                            ...
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/panel/12">
-                                <div
-                                    className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
-                                    <div className="flex justify-between">
-                                        <div className="w-[20%] flex justify-center items-start">
-                                            <div className="w-[70%]">
-                                                <Image src="/xlsm.svg" alt="costumer" width={0}
-                                                       height={0}
-                                                       sizes="100vw"
-                                                       style={{width: '100%', height: 'auto'}}/>
-                                            </div>
-                                        </div>
-                                        <div className="w-[60%]">
-                                            <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
-                                                    MyBusiness.xlsx
-                                                </h2>
-                                                <span className="ml-2 text-[#8083A3] text-[0.7rem]">
-                                          11:52 AM
-                                              </span>
-                                            </div>
-                                            <div className="">
-                                                <p className="text-[#8083A3] text-[0.8rem]">
-                                                    Lorem Ipsum is simply dummy text of the printing
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="mt-1 w-[15%] flex justify-center items-start">
-                                        <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
-                                            ...
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/panel/12">
-                                <div
-                                    className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
-                                    <div className="flex justify-between">
-                                        <div className="w-[20%] flex justify-center items-start">
-                                            <div className="w-[70%]">
-                                                <Image src="/xlsm.svg" alt="costumer" width={0}
-                                                       height={0}
-                                                       sizes="100vw"
-                                                       style={{width: '100%', height: 'auto'}}/>
-                                            </div>
-                                        </div>
-                                        <div className="w-[60%]">
-                                            <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
-                                                    MyBusiness.xlsx
-                                                </h2>
-                                                <span className="ml-2 text-[#8083A3] text-[0.7rem]">
-                                          11:52 AM
-                                              </span>
-                                            </div>
-                                            <div className="">
-                                                <p className="text-[#8083A3] text-[0.8rem]">
-                                                    Lorem Ipsum is simply dummy text of the printing
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="mt-1 w-[15%] flex justify-center items-start">
-                                        <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
-                                            ...
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/panel/12">
-                                <div
-                                    className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
-                                    <div className="flex justify-between">
-                                        <div className="w-[20%] flex justify-center items-start">
-                                            <div className="w-[70%]">
-                                                <Image src="/xlsm.svg" alt="costumer" width={0}
-                                                       height={0}
-                                                       sizes="100vw"
-                                                       style={{width: '100%', height: 'auto'}}/>
-                                            </div>
-                                        </div>
-                                        <div className="w-[60%]">
-                                            <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
-                                                    MyBusiness.xlsx
-                                                </h2>
-                                                <span className="ml-2 text-[#8083A3] text-[0.7rem]">
-                                          11:52 AM
-                                              </span>
-                                            </div>
-                                            <div className="">
-                                                <p className="text-[#8083A3] text-[0.8rem]">
-                                                    Lorem Ipsum is simply dummy text of the printing
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="mt-1 w-[15%] flex justify-center items-start">
-                                        <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
-                                            ...
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/panel/12">
-                                <div
-                                    className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
-                                    <div className="flex justify-between">
-                                        <div className="w-[20%] flex justify-center items-start">
-                                            <div className="w-[70%]">
-                                                <Image src="/xlsm.svg" alt="costumer" width={0}
-                                                       height={0}
-                                                       sizes="100vw"
-                                                       style={{width: '100%', height: 'auto'}}/>
-                                            </div>
-                                        </div>
-                                        <div className="w-[60%]">
-                                            <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
-                                                    MyBusiness.xlsx
-                                                </h2>
-                                                <span className="ml-2 text-[#8083A3] text-[0.7rem]">
-                                          11:52 AM
-                                              </span>
-                                            </div>
-                                            <div className="">
-                                                <p className="text-[#8083A3] text-[0.8rem]">
-                                                    Lorem Ipsum is simply dummy text of the printing
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="mt-1 w-[15%] flex justify-center items-start">
-                                        <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
-                                            ...
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/panel/12">
-                                <div
-                                    className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
-                                    <div className="flex justify-between">
-                                        <div className="w-[20%] flex justify-center items-start">
-                                            <div className="w-[70%]">
-                                                <Image src="/xlsm.svg" alt="costumer" width={0}
-                                                       height={0}
-                                                       sizes="100vw"
-                                                       style={{width: '100%', height: 'auto'}}/>
-                                            </div>
-                                        </div>
-                                        <div className="w-[60%]">
-                                            <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
-                                                    MyBusiness.xlsx
-                                                </h2>
-                                                <span className="ml-2 text-[#8083A3] text-[0.7rem]">
-                                          11:52 AM
-                                              </span>
-                                            </div>
-                                            <div className="">
-                                                <p className="text-[#8083A3] text-[0.8rem]">
-                                                    Lorem Ipsum is simply dummy text of the printing
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="mt-1 w-[15%] flex justify-center items-start">
-                                        <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
-                                            ...
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/panel/12">
-                                <div
-                                    className={pathname === "panel/12" ? "px-2 py-4 hover:bg-[#EAFFF6]" : "px-2 py-4 hover:bg-[#EAFFF6]"}>
-                                    <div className="flex justify-between">
-                                        <div className="w-[20%] flex justify-center items-start">
-                                            <div className="w-[70%]">
-                                                <Image src="/xlsm.svg" alt="costumer" width={0}
-                                                       height={0}
-                                                       sizes="100vw"
-                                                       style={{width: '100%', height: 'auto'}}/>
-                                            </div>
-                                        </div>
-                                        <div className="w-[60%]">
-                                            <div className="flex items-center">
-                                                <h2 className="font-bold text-[1rem] text-textGray">
-                                                    MyBusiness.xlsx
-                                                </h2>
-                                                <span className="ml-2 text-[#8083A3] text-[0.7rem]">
-                                          11:52 AM
-                                              </span>
-                                            </div>
-                                            <div className="">
-                                                <p className="text-[#8083A3] text-[0.8rem]">
-                                                    Lorem Ipsum is simply dummy text of the printing
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="mt-1 w-[15%] flex justify-center items-start">
-                                        <span
-                                            className="flex items-center font-bold text-[#8083A3] border border-solid border-2 border-neutral-200 px-2 py-1 text-center rounded">
-                                            ...
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </li>
+                                    </Link>
+                                </li>
+                            ))
+                        }
                     </ul>
                 </Scrollbars>
                 <div>
@@ -471,8 +243,7 @@ export default function RootLayout({children}) {
                         open={open}
                         onClose={handleClose}
                         aria-labelledby="modal-title"
-                        aria-describedby="modal-description"
-                    >
+                        aria-describedby="modal-description">
                         <Box
                             sx={{
                                 position: "absolute",
@@ -485,10 +256,7 @@ export default function RootLayout({children}) {
                                 bgcolor: "#fcfcfa",
                                 boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.5)",
                                 p: 4,
-                                textAlign: "center",
-
-                            }}
-                        >
+                                textAlign: "center",}}>
                             {selectedFiles.length > 0 ? (
                                 <div className="bg-[#f7f6f2] border-2 border-[#00FFB6] w-full h-full flex flex-col justify-center mx-auto rounded-3xl">
                                     <Typography id="modal-description" sx={{ mb: 2 }}>
@@ -501,31 +269,28 @@ export default function RootLayout({children}) {
                                             </li>
                                         ))}
                                     </ul>
-                                    <div className="mb-5">
+                                    {uploadLoading && <div className="flex justify-center z-10">
+                                        <span className="loader"></span>
+                                        </div>}
+                                    <div className="gap-3 mt-5 mb-5">
                                         <Button
                                             onClick={handleUpload}
                                             variant="outlined"
                                             color="success"
-                                            sx={{ mt: 2  }}>
+                                            sx={{ mt: 2  }}
+                                            disabled={uploadLoading}
+                                        >
                                             Send Files
                                         </Button>
-
                                         <Button
                                             onClick={() => {setSelectedFiles([]);}}
                                             variant="outlined"
                                             color="error"
-                                            sx={{ mt: 2, color: "#f72a0f" }}>
+                                            sx={{ mt: 2, color: "#f72a0f" }}
+                                            disabled={uploadLoading}
+                                        >
                                             Clear Files
                                         </Button>
-                                        <input
-                                            type="file"
-                                            accept=".jpg, .jpeg, .png, .pdf"
-                                            onChange={handleAddFile}
-                                            style={{ display: "none" }}
-                                            id="file-input"
-                                            multiple
-                                        />
-
                                     </div>
                                 </div>
                             ) : (
@@ -538,7 +303,7 @@ export default function RootLayout({children}) {
                                             height: "45vh",
                                         }}>
                                         <Image
-                                            src="csv.svg"
+                                            src="/csv.svg"
                                             alt="login image"
                                             width={0}
                                             height={0}
@@ -559,7 +324,7 @@ export default function RootLayout({children}) {
                                                 }}
                                             >
                                                 <Image
-                                                    src="upload.svg"
+                                                    src="/upload.svg"
                                                     alt="login image"
                                                     variant="contained"
                                                     width={0}
@@ -589,7 +354,7 @@ export default function RootLayout({children}) {
                                         />
 
                                         <Image
-                                            src="pdf.svg"
+                                            src="/pdf.svg"
                                             alt="login image"
                                             width={0}
                                             height={0}
@@ -603,7 +368,7 @@ export default function RootLayout({children}) {
                                             }}
                                         />
                                         <Image
-                                            src="dock.svg"
+                                            src="/dock.svg"
                                             alt="login image"
                                             width={0}
                                             height={0}
@@ -617,7 +382,7 @@ export default function RootLayout({children}) {
                                             }}
                                         />
                                         <Image
-                                            src="File.svg"
+                                            src="/File.svg"
                                             alt="login image"
                                             variant="contained"
                                             width={0}
