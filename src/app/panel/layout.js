@@ -104,8 +104,6 @@ export default function RootLayout({children}) {
         }).finally(()=>{
             setUploadLoading(false)
         });
-
-
     };
 
     const isOpen = useSelector((state) => state.sidebar.isOpen)

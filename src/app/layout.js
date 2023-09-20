@@ -5,11 +5,6 @@ import { store } from '../redux/store'
 import { Provider } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css';
 
-export const metadata = {
-  title: 'WFAI',
-  description: 'WFAI APP',
-}
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
