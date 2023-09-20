@@ -49,8 +49,10 @@ export default function Home({ params }) {
     },[])
 
     const handleSendMassage = () =>{
-
         setAILoading(true)
+
+        const newMassage = massage
+        setMassage("")
 
         let updateChatHistory = [...chatHistory];
         let chat = {
@@ -59,10 +61,11 @@ export default function Home({ params }) {
         }
         updateChatHistory.push(chat)
         setChatHistory(updateChatHistory)
+        scrollbars.current.scrollToBottom()
 
         let formData = new FormData()
         formData.append("audio","")
-        axios.post(`http://64.226.125.111:8000/chats/new_message?chat_id=${params.id}&input_type=text&output_type=audio&new_message=${massage}`, formData,{
+        axios.post(`http://64.226.125.111:8000/chats/new_message?chat_id=${params.id}&input_type=text&output_type=audio&new_message=${newMassage}`, formData,{
             headers: {
                 'Authorization': `Bearer ${window.sessionStorage.getItem("access_token")}`,
                 'Content-Type': 'multipart/form-data'
@@ -75,7 +78,7 @@ export default function Home({ params }) {
             });
         }).finally(()=>{
             setAILoading(false)
-            setMassage("")
+            scrollbars.current.scrollToBottom()
         });
     }
     const renderView = ({style, ...reset}) => {
@@ -125,7 +128,9 @@ export default function Home({ params }) {
         audio.src = url;
         audio.controls = true;
     };
-
+    const handleUpdate = () =>{
+        scrollbars.current.scrollToBottom()
+    }
     return (
         <div className="h-screen w-full flex flex-col justify-between">
             <header className="py-7 px-5 md:px-10 flex justify-between items-center border-b  border-b-1 border-b-neutral-300">
@@ -185,13 +190,14 @@ export default function Home({ params }) {
 
             <Scrollbars autoHide
                         ref={scrollbars}
-                        className="scroll-bar"
+                        className="scroll-bar pb-10"
                         autoHideTimeout={500}
                         autoHideDuration={200}
                         renderView={renderView}
                         renderThumbHorizontal={renderThumbHorizontal}
                         renderThumbVertical={renderThumbVertical}
                         renderTrackVertical={renderTrackVertical}>
+
                 <div className="flex justify-center">
                     <div className="w-[17%] rounded-[0.5rem]">
                         <Image src="/Animations/Wink.svg" alt="costumer" width={0}
