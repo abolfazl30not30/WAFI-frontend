@@ -1,33 +1,34 @@
 "use client"
 import Image from 'next/image'
 import {Scrollbars} from 'react-custom-scrollbars';
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {AiOutlinePaperClip} from "react-icons/ai"
-import { useSelector, useDispatch } from 'react-redux'
-import { toggleMenu } from '../../../redux/sidebar/sidebarSlice'
-import { AudioRecorder } from 'react-audio-voice-recorder';
-import {useState} from "react";
-import axios from "axios";
+import {useDispatch, useSelector} from 'react-redux'
+import {toggleMenu} from '../../../redux/sidebar/sidebarSlice'
+import {AudioRecorder} from 'react-audio-voice-recorder';
+import {useEffect, useRef, useState} from "react";
 import {toast} from "react-toastify";
-import {useEffect,useRef} from "react";
 import "../../../style/spotLoading.css"
 import api from "@/hooks/api/api";
-import {useRouter} from "next/navigation";
+import Tooltip from '@mui/material/Tooltip';
 
-export default function Home({ params }) {
+
+export default function Home({params}) {
     const router = useRouter()
     const pathname = usePathname()
     const scrollbars = useRef(null)
     const isOpen = useSelector((state) => state.sidebar.isOpen)
     const dispatch = useDispatch()
-    const [massage ,setMassage] = useState("")
-    const [AILoading,setAILoading] = useState(false)
+    const [massage, setMassage] = useState("")
+    const [AILoading, setAILoading] = useState(false)
     const [chat, setChat] = useState()
-    const [chatHistory,setChatHistory] = useState([])
+    const [chatHistory, setChatHistory] = useState([])
+    const [robotVoice, setRobotVoice] = useState(new Audio())
+    const [isPlay,setIsPlay] = useState(false)
 
-    const handleBack = () =>{
+    const handleBack = () => {
         router.push('/panel')
-        if(window.innerWidth < 768){
+        if (window.innerWidth < 768) {
             dispatch(toggleMenu())
         }
     }
@@ -37,64 +38,82 @@ export default function Home({ params }) {
     }, [chatHistory]);
 
 
-    const getChats = async ()=>{
+    const getChats = async () => {
         try {
             const res = await api.get(`chats/read/${params.id}`)
             setChat(res)
-            if(res.chat_history !== null){
+            if (res.chat_history !== null) {
                 setChatHistory(res?.chat_history)
             }
-        }catch (err){
+        } catch (err) {
             toast.error("the connection has error !", {
                 position: toast.POSITION.TOP_CENTER
             });
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getChats()
-    },[])
+    }, [])
 
-    const addLoadingMassage = () =>{
+    const addLoadingMassage = (mag) => {
         let date = new Date().toJSON();
         let updateChatHistory = [...chatHistory];
         let chat = {
-            Human:{
+            Human: {
                 date: date,
-                message:massage
+                message: mag
             },
             AI: {
                 date: date,
-                message:<div className="mb-10"><span className="loader"></span></div>
+                message: <div className="mb-10"><span className="loader"></span></div>
             },
         }
         updateChatHistory.push(chat)
         setChatHistory(updateChatHistory)
     }
-    const handleSendMassage = async () =>{
+
+    const handleSendMassage = async () => {
         setAILoading(true)
 
-        addLoadingMassage()
+        addLoadingMassage(massage)
 
         const newMassage = massage
         setMassage("")
 
         let formData = new FormData()
-        formData.append("audio","")
+        formData.append("audio", "")
 
-        try{
-            await api.postFile(`chats/new_message?chat_id=${params.id}&input_type=text&output_type=text&new_message=${newMassage}`,formData)
+        try {
+            await api.postFile(`chats/new_message?chat_id=${params.id}&input_type=text&output_type=text&new_message=${newMassage}`, formData)
             getChats()
-        }catch (err){
+        } catch (err) {
             toast.error("Has Error !", {
                 position: toast.POSITION.TOP_CENTER
             });
-        }finally {
+        } finally {
             setAILoading(false)
             scrollbars.current.scrollToBottom()
         }
-
     }
+
+    const handleSendMassageByVoice = async (mag) => {
+        addLoadingMassage(mag)
+
+        let formData = new FormData()
+        formData.append("audio", "")
+
+        try {
+            await api.postFile(`chats/new_message?chat_id=${params.id}&input_type=text&output_type=text&new_message=${mag}`, formData)
+            getChats()
+        } catch (err) {
+            console.log(err)
+            toast.error("the conection has error !", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+    }
+
     const renderView = ({style, ...reset}) => {
         const customStyle = {
             marginRight: '-19px',
@@ -134,23 +153,71 @@ export default function Home({ params }) {
         };
         return <div style={{...style, ...thumbStyle}} {...reset} />;
     };
+    const addLoadingMassageVoice = () => {
+        let date = new Date().toJSON();
+        let updateChatHistory = [...chatHistory];
+        let chat = {
+            Human: {
+                date: date,
+                message: <div className="mb-10"><span className="loader"></span></div>
+            },
+            AI: {
+                date: date,
+                message: <div className="mb-10"><span className="loader"></span></div>
+            },
+        }
+        updateChatHistory.push(chat)
+        setChatHistory(updateChatHistory)
+    }
+    const addAudioElement = async (blob) => {
+        setAILoading(true)
 
-    const addAudioElement = (blob) => {
+        addLoadingMassageVoice()
+
+        let formData = new FormData()
+        formData.append("audio_file", blob)
+
+        try {
+            const res = await api.postFile("chats/transcribe", formData)
+            handleSendMassageByVoice(res)
+        } catch (err) {
+            toast.error("Has Error !", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        } finally {
+            setAILoading(false)
+            scrollbars.current.scrollToBottom()
+        }
+
         const url = URL.createObjectURL(blob);
         const audio = document.createElement('audio');
-        console.log(url)
         audio.src = url;
         audio.controls = true;
     };
-    const handleUpdate = () =>{
+    const handleUpdate = () => {
         scrollbars.current.scrollToBottom()
     }
+
+    const handlePlayVoice = async (msg) => {
+        if (robotVoice.paused) {
+            const res = await api.post(`chats/tts?text=${msg}`)
+            let audio = new Audio("data:audio/wav;base64," + res)
+            audio.play()
+            setRobotVoice(audio)
+        }
+    }
+
+    const handlePauseVoice = ()=>{
+        robotVoice.play()
+    }
+
     return (
         <div className="h-screen w-full flex flex-col justify-between">
-            <header className="py-7 px-5 md:px-10 flex justify-between items-center border-b  border-b-1 border-b-neutral-300">
+            <header
+                className="py-7 px-5 md:px-10 flex justify-between items-center border-b  border-b-1 border-b-neutral-300">
                 <div className="flex items-center">
                     <button onClick={handleBack}
-                        className="hover:bg-[#EAFFF6] px-4 py-[0.7rem] rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">
+                            className="hover:bg-[#EAFFF6] px-4 py-[0.7rem] rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">
                         <div className="w-2">
                             <Image src="/back.svg" alt="costumer" width={0}
                                    height={0}
@@ -221,7 +288,7 @@ export default function Home({ params }) {
                     </div>
                 </div>
                 {
-                    chatHistory?.map((massage)=>(
+                    chatHistory?.map((massage) => (
                         <div>
                             <div className="flex justify-end">
                                 <div className="flex flex-row-reverse mx-8 my-5 w-[80%] md:w-[50%]">
@@ -239,7 +306,7 @@ export default function Home({ params }) {
                                                 Me
                                             </h2>
                                             <span className="mx-2 text-[#8083A3] text-[0.7rem]">
-                                               { massage.Human.date?.substring(11,16)}
+                                               {massage.Human.date?.substring(11, 16)}
                                             </span>
                                         </div>
                                         <div className="mt-2">
@@ -269,13 +336,40 @@ export default function Home({ params }) {
                                                 Robot
                                             </h2>
                                             <span className="mx-2 text-[#8083A3] text-[0.7rem]">
-                                                { massage.AI.date?.substring(11,16)}
+                                                {massage.AI.date?.substring(11, 16)}
                                             </span>
                                         </div>
                                         <div className="mt-2">
-                                            <p className="flex justify-center font-medium text-textGray bg-[#F3F4F9]  rounded-xl rounded-ss-none p-3 bg-[] text-[0.8rem]">
-                                                {massage?.AI?.message}
-                                            </p>
+                                            <div
+                                                className="flex flex-col justify-center font-medium text-textGray bg-[#F3F4F9]  rounded-xl rounded-ss-none p-3">
+                                                <p className="text-[0.8rem]">
+                                                    {massage?.AI?.message}
+                                                </p>
+                                                <div className="mt-4 flex justify-end">
+                                                    {robotVoice.paused ? (
+                                                        <Tooltip title="play the voice" arrow>
+                                                            <button onClick={() => {
+                                                                handlePlayVoice(massage?.AI?.message)
+                                                            }}>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="23"
+                                                                     height="23" fill="currentColor"
+                                                                     className="bi bi-play-circle" viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                                    <path
+                                                                        d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
+                                                                </svg>
+                                                            </button>
+                                                        </Tooltip>
+                                                    ) : (
+                                                        <Tooltip title="pause the voice" arrow>
+                                                            <button onClick={() => {handlePauseVoice()}}>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="128" cy="128" r="96" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"/><line x1="104" y1="96" x2="104" y2="160" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"/><line x1="152" y1="96" x2="152" y2="160" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"/></svg>
+                                                            </button>
+                                                        </Tooltip>
+                                                    )}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -284,9 +378,12 @@ export default function Home({ params }) {
                     ))
                 }
             </Scrollbars>
-            <div className="py-3 px-5 md:px-10 flex justify-between items-center border-t  border-t-1 border-t-neutral-300">
+            <div
+                className="py-3 px-5 md:px-10 flex justify-between items-center border-t  border-t-1 border-t-neutral-300">
                 <div className="w-[80%]">
-                    <textarea value={massage} onChange={(e)=>{setMassage(e.target.value)}} placeholder="Type to add your message..."
+                    <textarea value={massage} onChange={(e) => {
+                        setMassage(e.target.value)
+                    }} placeholder="Type to add your message..."
                               className="text-scroll  w-full focus:outline-none py-5 focus:border-none"/>
                 </div>
                 <div className="flex gap-4 items-center justify-between">
@@ -297,16 +394,15 @@ export default function Home({ params }) {
                             echoCancellation: true,
                         }}
                         onNotAllowedOrFound={(err) => console.table(err)}
-                        downloadFileExtension="webm"
+                        downloadFileExtension="mp3"
                         mediaRecorderOptions={{
                             audioBitsPerSecond: 128000,
                         }}/>
                     <button>
-                            <AiOutlinePaperClip className="text-[#C9C9C9] text-[1.6rem]"/>
+                        <AiOutlinePaperClip className="text-[#C9C9C9] text-[1.6rem]"/>
                     </button>
-                    <button disabled={massage === "" || AILoading}
-                            onClick={handleSendMassage}
-                        className="disabled:bg-[#EAFFF6] hover:bg-[#EAFFF6] bg-mainGreen px-3 py-3 rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">
+                    <button disabled={massage === "" || AILoading} onClick={handleSendMassage}
+                            className="disabled:bg-[#EAFFF6] hover:bg-[#EAFFF6] bg-mainGreen px-3 py-3 rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">
                         <div className="w-6">
                             <Image src="/send.svg" alt="costumer" width={0}
                                    height={0}

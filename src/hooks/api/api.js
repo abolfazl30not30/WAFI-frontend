@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import {useRouter} from "next/navigation";
 
 const axiosParams = {
-    baseURL: 'https://64.226.125.111:8000/'
+    baseURL: 'http://64.226.125.111:8000/'
 }
 
 const axiosInstance = axios.create(axiosParams);

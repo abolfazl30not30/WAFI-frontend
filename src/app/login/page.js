@@ -16,9 +16,7 @@ const Login = () => {
     <>
       <body suppressHydrationWarning={true} className="max-h-screen">
         <section className="bg-gray-100 md:bg-[#f9f9f9] min-h-screen flex items-center justify-center">
-          <div className="flex-col bg-gray-100 p-5 rounded-2xl md:shadow-lg w-full items-center md:w-3/5 flex-col flex-col md:flex-col 	">
-           
-
+          <div className="flex-col bg-gray-100 p-5 rounded-2xl md:shadow-lg w-full items-center md:w-3/5 flex-col flex-col md:flex-col">
             <div className="flex flex-col md:flex-row mb-7">
               <div className="w-full md:w-1/2 px-5 flex flex-col justify-center items-center rounded-r-[48px]">
               <div className="flex flex-col  items-center m-10">

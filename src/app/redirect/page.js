@@ -16,7 +16,7 @@ const Redirect = () => {
   useEffect(() => {
       const code = searchParams.get('code')
     if (code) {
-      const serverEndpoint = `https://64.226.125.111:8000/users/login/google?code=${code}`;
+      const serverEndpoint = `http://64.226.125.111:8000/users/login/google?code=${code}`;
 
       axios
         .post(serverEndpoint)
