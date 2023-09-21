@@ -6,7 +6,7 @@ const Login = () => {
     const clientId =
       "188888100839-1840iic8vn85kj85a28gqcn92262lblm.apps.googleusercontent.com";
     const clientSecret = "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";
-    const redirectUri = "http://localhost:3000/redirect";
+    const redirectUri = "https://wafi-api.neuracase.com/redirect";
     const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email%20profile`;
 
     window.location.href = authUrl;
@@ -16,9 +16,7 @@ const Login = () => {
     <>
       <body suppressHydrationWarning={true} className="max-h-screen">
         <section className="bg-gray-100 md:bg-[#f9f9f9] min-h-screen flex items-center justify-center">
-          <div className="flex-col bg-gray-100 p-5 rounded-2xl md:shadow-lg w-full items-center md:w-3/5 flex-col flex-col md:flex-col 	">
-           
-
+          <div className="flex-col bg-gray-100 p-5 rounded-2xl md:shadow-lg w-full items-center md:w-3/5 flex-col flex-col md:flex-col">
             <div className="flex flex-col md:flex-row mb-7">
               <div className="w-full md:w-1/2 px-5 flex flex-col justify-center items-center rounded-r-[48px]">
               <div className="flex flex-col  items-center m-10">
