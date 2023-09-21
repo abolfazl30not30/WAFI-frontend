@@ -11,7 +11,7 @@ import {toast} from "react-toastify";
 import "../../../style/spotLoading.css"
 import api from "@/hooks/api/api";
 import Tooltip from '@mui/material/Tooltip';
-
+import "../../../style/smallSpinner.css"
 
 export default function Home({params}) {
     const router = useRouter()
@@ -24,8 +24,8 @@ export default function Home({params}) {
     const [chat, setChat] = useState()
     const [chatHistory, setChatHistory] = useState([])
     const [robotVoice, setRobotVoice] = useState(new Audio())
-    const [isPlay,setIsPlay] = useState(false)
-
+    const [isPlay, setIsPlay] = useState(false)
+    const [voiceLoading, setVoiceLoading] = useState(false)
     const handleBack = () => {
         router.push('/panel')
         if (window.innerWidth < 768) {
@@ -199,15 +199,17 @@ export default function Home({params}) {
     }
 
     const handlePlayVoice = async (msg) => {
+        setVoiceLoading(true)
         if (robotVoice.paused) {
             const res = await api.post(`chats/tts?text=${msg}`)
             let audio = new Audio("data:audio/wav;base64," + res)
             audio.play()
             setRobotVoice(audio)
         }
+        setVoiceLoading(false)
     }
 
-    const handlePauseVoice = ()=>{
+    const handlePauseVoice = () => {
         robotVoice.play()
     }
 
@@ -346,28 +348,46 @@ export default function Home({params}) {
                                                     {massage?.AI?.message}
                                                 </p>
                                                 <div className="mt-4 flex justify-end">
-                                                    {robotVoice.paused ? (
-                                                        <Tooltip title="play the voice" arrow>
-                                                            <button onClick={() => {
-                                                                handlePlayVoice(massage?.AI?.message)
-                                                            }}>
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="23"
-                                                                     height="23" fill="currentColor"
-                                                                     className="bi bi-play-circle" viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                                                    <path
-                                                                        d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
-                                                                </svg>
-                                                            </button>
-                                                        </Tooltip>
-                                                    ) : (
-                                                        <Tooltip title="pause the voice" arrow>
-                                                            <button onClick={() => {handlePauseVoice()}}>
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="128" cy="128" r="96" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"/><line x1="104" y1="96" x2="104" y2="160" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"/><line x1="152" y1="96" x2="152" y2="160" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"/></svg>
-                                                            </button>
-                                                        </Tooltip>
-                                                    )}
+                                                    {
+                                                        voiceLoading ? (
+                                                            <span className="loaderSmall"></span>
+                                                        ) : (
+                                                            <Tooltip title="play the voice" arrow>
+                                                                <button onClick={() => {
+                                                                    handlePlayVoice(massage?.AI?.message)
+                                                                }}>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="23"
+                                                                         height="23" fill="currentColor"
+                                                                         className="bi bi-play-circle"
+                                                                         viewBox="0 0 16 16">
+                                                                        <path
+                                                                            d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                                        <path
+                                                                            d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
+                                                                    </svg>
+                                                                </button>
+                                                            </Tooltip>
+                                                        )
+                                                    }
+                                                    {/*<Tooltip title="pause the voice" arrow>*/}
+                                                    {/*    <button onClick={() => {*/}
+                                                    {/*        handlePauseVoice()*/}
+                                                    {/*    }}>*/}
+                                                    {/*        <svg xmlns="http://www.w3.org/2000/svg" width="23"*/}
+                                                    {/*             height="23" viewBox="0 0 256 256">*/}
+                                                    {/*            <rect width="256" height="256" fill="none"/>*/}
+                                                    {/*            <circle cx="128" cy="128" r="96" fill="none"*/}
+                                                    {/*                    stroke="#000" stroke-linecap="round"*/}
+                                                    {/*                    stroke-linejoin="round" stroke-width="12"/>*/}
+                                                    {/*            <line x1="104" y1="96" x2="104" y2="160" fill="none"*/}
+                                                    {/*                  stroke="#000" stroke-linecap="round"*/}
+                                                    {/*                  stroke-linejoin="round" stroke-width="12"/>*/}
+                                                    {/*            <line x1="152" y1="96" x2="152" y2="160" fill="none"*/}
+                                                    {/*                  stroke="#000" stroke-linecap="round"*/}
+                                                    {/*                  stroke-linejoin="round" stroke-width="12"/>*/}
+                                                    {/*        </svg>*/}
+                                                    {/*    </button>*/}
+                                                    {/*</Tooltip>*/}
                                                 </div>
                                             </div>
                                         </div>
