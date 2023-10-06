@@ -23,9 +23,10 @@ export default function Home({params}) {
     const [AILoading, setAILoading] = useState(false)
     const [chat, setChat] = useState()
     const [chatHistory, setChatHistory] = useState([])
-    const [robotVoice, setRobotVoice] = useState(new Audio())
+    const [robotVoice, setRobotVoice] = useState(null)
     const [isPlay, setIsPlay] = useState(false)
     const [voiceLoading, setVoiceLoading] = useState(false)
+    const [emotion,setEmotion] = useState("")
     const handleBack = () => {
         router.push('/panel')
         if (window.innerWidth < 768) {
@@ -44,6 +45,7 @@ export default function Home({params}) {
             setChat(res)
             if (res.chat_history !== null) {
                 setChatHistory(res?.chat_history)
+                setEmotion(res?.chat_history[res?.chat_history.length-1].AI.emotion)
             }
         } catch (err) {
             toast.error("the connection has error !", {
@@ -107,7 +109,7 @@ export default function Home({params}) {
             await api.postFile(`chats/new_message?chat_id=${params.id}&input_type=text&output_type=text&new_message=${mag}`, formData)
             getChats()
         } catch (err) {
-            console.log(err)
+
             toast.error("the conection has error !", {
                 position: toast.POSITION.TOP_CENTER
             });
@@ -159,11 +161,11 @@ export default function Home({params}) {
         let chat = {
             Human: {
                 date: date,
-                message: <div className="mb-10"><span className="loader"></span></div>
+                message: <div className="mb-10 flex justify-center"><span className="loader"></span></div>
             },
             AI: {
                 date: date,
-                message: <div className="mb-10"><span className="loader"></span></div>
+                message: <div className="mb-10 flex justify-center"><span className="loader"></span></div>
             },
         }
         updateChatHistory.push(chat)
@@ -210,7 +212,7 @@ export default function Home({params}) {
     }
 
     const handlePauseVoice = () => {
-        robotVoice.play()
+        robotVoice.pause()
     }
 
     return (
@@ -232,33 +234,33 @@ export default function Home({params}) {
                             {chat?.chat?.Title}
                         </h2>
                         <p className="hidden md:block text-[#8083A3] text-[0.8rem]">
-                            Lorem Ipsum is simply dummy text of the printing
+                            {chat?.summary}
                         </p>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <button
-                        className="hover:bg-[#EAFFF6] px-[0.8rem] py-[0.7rem] rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">
-                        <div className="w-[0.9rem]">
-                            <Image src="/edit.svg" alt="costumer" width={0}
-                                   height={0}
-                                   sizes="100vw"
-                                   style={{width: '100%', height: 'auto'}}/>
-                        </div>
-                    </button>
-                    <div className="h-full text-[1.5rem] text-[#ECEEF5]">
-                        |
-                    </div>
-                    <button
-                        className="hover:bg-[#EAFFF6] px-[0.8rem] py-[0.65rem] rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">
-                        <div className="w-[1rem]">
-                            <Image src="/search.svg" alt="costumer" width={0}
-                                   height={0}
-                                   sizes="100vw"
-                                   style={{width: '100%', height: 'auto'}}/>
-                        </div>
-                    </button>
+                    {/*<button*/}
+                    {/*    className="hover:bg-[#EAFFF6] px-[0.8rem] py-[0.7rem] rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">*/}
+                    {/*    <div className="w-[0.9rem]">*/}
+                    {/*        <Image src="/edit.svg" alt="costumer" width={0}*/}
+                    {/*               height={0}*/}
+                    {/*               sizes="100vw"*/}
+                    {/*               style={{width: '100%', height: 'auto'}}/>*/}
+                    {/*    </div>*/}
+                    {/*</button>*/}
+                    {/*<div className="h-full text-[1.5rem] text-[#ECEEF5]">*/}
+                    {/*    |*/}
+                    {/*</div>*/}
+                    {/*<button*/}
+                    {/*    className="hover:bg-[#EAFFF6] px-[0.8rem] py-[0.65rem] rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">*/}
+                    {/*    <div className="w-[1rem]">*/}
+                    {/*        <Image src="/search.svg" alt="costumer" width={0}*/}
+                    {/*               height={0}*/}
+                    {/*               sizes="100vw"*/}
+                    {/*               style={{width: '100%', height: 'auto'}}/>*/}
+                    {/*    </div>*/}
+                    {/*</button>*/}
                     <button
                         className="hover:bg-[#EAFFF6] bg-mainGreen px-2 py-[0.4rem] rounded-[0.5rem] border border-solid border-2 border-[#ECEEF5]">
                         <div className="w-7">
@@ -270,7 +272,14 @@ export default function Home({params}) {
                     </button>
                 </div>
             </header>
-
+            <div className="mt-4 mb-3 flex justify-center">
+                <div className="w-[15%] rounded-[0.5rem]">
+                    <Image src={`/Animations/${emotion}.svg`} alt="costumer" width={0}
+                           height={0}
+                           sizes="100vw"
+                           style={{width: '100%', height: 'auto', objectFit: "cover"}}/>
+                </div>
+            </div>
             <Scrollbars autoHide
                         ref={scrollbars}
                         className="scroll-bar pb-10"
@@ -280,15 +289,6 @@ export default function Home({params}) {
                         renderThumbHorizontal={renderThumbHorizontal}
                         renderThumbVertical={renderThumbVertical}
                         renderTrackVertical={renderTrackVertical}>
-
-                <div className="flex justify-center">
-                    <div className="w-[17%] rounded-[0.5rem]">
-                        <Image src="/Animations/Wink.svg" alt="costumer" width={0}
-                               height={0}
-                               sizes="100vw"
-                               style={{width: '100%', height: 'auto', objectFit: "cover"}}/>
-                    </div>
-                </div>
                 {
                     chatHistory?.map((massage) => (
                         <div>
@@ -296,7 +296,7 @@ export default function Home({params}) {
                                 <div className="flex flex-row-reverse mx-8 my-5 w-[80%] md:w-[50%]">
                                     <div className="mx-2">
                                         <div className="w-[2rem] rounded-[0.5rem]">
-                                            <Image src="/img.png" alt="costumer" width={0}
+                                                <Image src="/user.png" alt="costumer" width={0}
                                                    height={0}
                                                    sizes="100vw"
                                                    style={{width: '100%', height: 'auto', objectFit: "cover"}}/>
@@ -312,14 +312,14 @@ export default function Home({params}) {
                                             </span>
                                         </div>
                                         <div className="mt-2">
-                                            <p className="font-medium text-textGray  bg-mainGreen rounded-xl rounded-se-none p-3 bg-[] text-[0.8rem]">
+                                            <p className="flex justify-center font-medium text-textGray  bg-mainGreen rounded-xl rounded-se-none p-3 bg-[] text-[0.8rem]">
                                                 {massage?.Human?.message}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex ">
+                            <div className="flex">
                                 <div className="flex mx-8 my-5 w-[80%] md:w-[50%]">
                                     <div className="mx-2">
                                         <div
@@ -335,7 +335,7 @@ export default function Home({params}) {
                                     <div>
                                         <div className="flex  items-center">
                                             <h2 className="font-bold text-[0.9rem] text-textGray">
-                                                Robot
+                                                WAFI
                                             </h2>
                                             <span className="mx-2 text-[#8083A3] text-[0.7rem]">
                                                 {massage.AI.date?.substring(11, 16)}
@@ -344,7 +344,7 @@ export default function Home({params}) {
                                         <div className="mt-2">
                                             <div
                                                 className="flex flex-col justify-center font-medium text-textGray bg-[#F3F4F9]  rounded-xl rounded-ss-none p-3">
-                                                <p className="text-[0.8rem]">
+                                                <p className="flex justify-center text-[0.8rem]">
                                                     {massage?.AI?.message}
                                                 </p>
                                                 <div className="mt-4 flex justify-end">
@@ -413,7 +413,6 @@ export default function Home({params}) {
                             noiseSuppression: true,
                             echoCancellation: true,
                         }}
-                        onNotAllowedOrFound={(err) => console.table(err)}
                         downloadFileExtension="mp3"
                         mediaRecorderOptions={{
                             audioBitsPerSecond: 128000,
