@@ -91,7 +91,7 @@ export default function RootLayout({children}) {
             getChats()
             router.push(`/panel/${res.ID}`)
         }catch (err){
-            console.log(err)
+
             toast.error("the connection has error !", {
                 position: toast.POSITION.TOP_CENTER
             });
@@ -211,8 +211,8 @@ export default function RootLayout({children}) {
                                                         <span className="ml-2 text-[#8083A3] text-[0.7rem]">{chat.DateCreated.substring(11,16 )}</span>
                                                     </div>
                                                     <div className="">
-                                                        <p className="text-[#8083A3] text-[0.8rem]">
-                                                            Lorem Ipsum is simply dummy text of the printing
+                                                        <p className="text-[#8083A3] text-[0.7rem]">
+                                                            {chat.summary}
                                                         </p>
                                                     </div>
                                                 </div>

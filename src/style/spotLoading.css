@@ -1,7 +1,7 @@
 .loader, .loader:before, .loader:after {
     border-radius: 50%;
-    width: 2.3em;
-    height: 2.3em;
+    width: 2em;
+    height: 2em;
     animation-fill-mode: both;
     animation: bblFadInOut 1.8s infinite ease-in-out;
 }

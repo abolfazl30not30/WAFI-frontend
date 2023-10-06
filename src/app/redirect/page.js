@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../redux/auth/authSlice'
 
 const Redirect = () => {
-
+// https://wafi-backend.neuracase.com
     const dispatch = useDispatch()
     const searchParams = useSearchParams()
     const router = useRouter()

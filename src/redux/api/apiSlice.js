@@ -17,7 +17,6 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
     const router = useRouter()
     let result = await baseQuery(args, api, extraOptions)
-    console.log(result)
     if (result?.error?.originalStatus === 403) {
         api.dispatch(logOut())
         router.push("/login")
