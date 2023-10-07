@@ -23,10 +23,11 @@ export default function Home({params}) {
     const [AILoading, setAILoading] = useState(false)
     const [chat, setChat] = useState()
     const [chatHistory, setChatHistory] = useState([])
-    const [robotVoice, setRobotVoice] = useState(null)
+    const [robotVoice, setRobotVoice] = useState(new Audio)
     const [isPlay, setIsPlay] = useState(false)
     const [voiceLoading, setVoiceLoading] = useState(false)
-    const [emotion,setEmotion] = useState("")
+    const [activeVoice, setActiveVoice] = useState(false)
+    const [emotion, setEmotion] = useState("Wink")
     const handleBack = () => {
         router.push('/panel')
         if (window.innerWidth < 768) {
@@ -43,9 +44,9 @@ export default function Home({params}) {
         try {
             const res = await api.get(`chats/read/${params.id}`)
             setChat(res)
-            if (res.chat_history !== null) {
+            if (res.chat_history !== []) {
                 setChatHistory(res?.chat_history)
-                setEmotion(res?.chat_history[res?.chat_history.length-1].AI.emotion)
+                setEmotion(res?.chat_history[res?.chat_history.length - 1]?.AI?.emotion)
             }
         } catch (err) {
             toast.error("the connection has error !", {
@@ -191,10 +192,6 @@ export default function Home({params}) {
             scrollbars.current.scrollToBottom()
         }
 
-        const url = URL.createObjectURL(blob);
-        const audio = document.createElement('audio');
-        audio.src = url;
-        audio.controls = true;
     };
     const handleUpdate = () => {
         scrollbars.current.scrollToBottom()
@@ -207,12 +204,17 @@ export default function Home({params}) {
             let audio = new Audio("data:audio/wav;base64," + res)
             audio.play()
             setRobotVoice(audio)
+            setActiveVoice(true)
         }
         setVoiceLoading(false)
     }
-
+    const handleEnded = () => {
+        robotVoice.pause()
+        setActiveVoice(false)
+    }
     const handlePauseVoice = () => {
         robotVoice.pause()
+        setActiveVoice(false)
     }
 
     return (
@@ -274,10 +276,12 @@ export default function Home({params}) {
             </header>
             <div className="mt-4 mb-3 flex justify-center">
                 <div className="w-[15%] rounded-[0.5rem]">
-                    <Image src={`/Animations/${emotion}.svg`} alt="costumer" width={0}
-                           height={0}
-                           sizes="100vw"
-                           style={{width: '100%', height: 'auto', objectFit: "cover"}}/>
+                    {emotion !== undefined && (
+                        <Image src={`/Animations/${emotion}.svg`} alt="costumer" width={0}
+                               height={0}
+                               sizes="100vw"
+                               style={{width: '100%', height: 'auto', objectFit: "cover"}}/>
+                    )}
                 </div>
             </div>
             <Scrollbars autoHide
@@ -296,7 +300,7 @@ export default function Home({params}) {
                                 <div className="flex flex-row-reverse mx-8 my-5 w-[80%] md:w-[50%]">
                                     <div className="mx-2">
                                         <div className="w-[2rem] rounded-[0.5rem]">
-                                                <Image src="/user.png" alt="costumer" width={0}
+                                            <Image src="/user.png" alt="costumer" width={0}
                                                    height={0}
                                                    sizes="100vw"
                                                    style={{width: '100%', height: 'auto', objectFit: "cover"}}/>
@@ -352,42 +356,54 @@ export default function Home({params}) {
                                                         voiceLoading ? (
                                                             <span className="loaderSmall"></span>
                                                         ) : (
-                                                            <Tooltip title="play the voice" arrow>
-                                                                <button onClick={() => {
-                                                                    handlePlayVoice(massage?.AI?.message)
-                                                                }}>
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="23"
-                                                                         height="23" fill="currentColor"
-                                                                         className="bi bi-play-circle"
-                                                                         viewBox="0 0 16 16">
-                                                                        <path
-                                                                            d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                                                        <path
-                                                                            d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
-                                                                    </svg>
-                                                                </button>
-                                                            </Tooltip>
+                                                            !activeVoice ?
+                                                                (
+                                                                    <Tooltip title="play the voice" arrow>
+                                                                        <button onClick={() => {
+                                                                            handlePlayVoice(massage?.AI?.message)
+                                                                        }}>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                 width="23"
+                                                                                 height="23" fill="currentColor"
+                                                                                 className="bi bi-play-circle"
+                                                                                 viewBox="0 0 16 16">
+                                                                                <path
+                                                                                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                                                <path
+                                                                                    d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
+                                                                            </svg>
+                                                                        </button>
+                                                                    </Tooltip>
+                                                                ) : (
+                                                                    <Tooltip title="pause the voice" arrow>
+                                                                        <button onClick={() => {
+                                                                            handlePauseVoice()
+                                                                        }}>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                 width="23"
+                                                                                 height="23" viewBox="0 0 256 256">
+                                                                                <rect width="256" height="256" fill="none"/>
+                                                                                <circle cx="128" cy="128" r="96" fill="none"
+                                                                                        stroke="#000" stroke-linecap="round"
+                                                                                        stroke-linejoin="round"
+                                                                                        stroke-width="12"/>
+                                                                                <line x1="104" y1="96" x2="104" y2="160"
+                                                                                      fill="none"
+                                                                                      stroke="#000" stroke-linecap="round"
+                                                                                      stroke-linejoin="round"
+                                                                                      stroke-width="12"/>
+                                                                                <line x1="152" y1="96" x2="152" y2="160"
+                                                                                      fill="none"
+                                                                                      stroke="#000" stroke-linecap="round"
+                                                                                      stroke-linejoin="round"
+                                                                                      stroke-width="12"/>
+                                                                            </svg>
+                                                                        </button>
+                                                                    </Tooltip>
+                                                                )
                                                         )
                                                     }
-                                                    {/*<Tooltip title="pause the voice" arrow>*/}
-                                                    {/*    <button onClick={() => {*/}
-                                                    {/*        handlePauseVoice()*/}
-                                                    {/*    }}>*/}
-                                                    {/*        <svg xmlns="http://www.w3.org/2000/svg" width="23"*/}
-                                                    {/*             height="23" viewBox="0 0 256 256">*/}
-                                                    {/*            <rect width="256" height="256" fill="none"/>*/}
-                                                    {/*            <circle cx="128" cy="128" r="96" fill="none"*/}
-                                                    {/*                    stroke="#000" stroke-linecap="round"*/}
-                                                    {/*                    stroke-linejoin="round" stroke-width="12"/>*/}
-                                                    {/*            <line x1="104" y1="96" x2="104" y2="160" fill="none"*/}
-                                                    {/*                  stroke="#000" stroke-linecap="round"*/}
-                                                    {/*                  stroke-linejoin="round" stroke-width="12"/>*/}
-                                                    {/*            <line x1="152" y1="96" x2="152" y2="160" fill="none"*/}
-                                                    {/*                  stroke="#000" stroke-linecap="round"*/}
-                                                    {/*                  stroke-linejoin="round" stroke-width="12"/>*/}
-                                                    {/*        </svg>*/}
-                                                    {/*    </button>*/}
-                                                    {/*</Tooltip>*/}
+
                                                 </div>
                                             </div>
                                         </div>
@@ -397,7 +413,13 @@ export default function Home({params}) {
                         </div>
                     ))
                 }
+                <div>
+                    <audio id="myAudio" onEnded={handleEnded}>
+                        <source src={robotVoice} type="audio/mpeg"/>
+                    </audio>
+                </div>
             </Scrollbars>
+
             <div
                 className="py-3 px-5 md:px-10 flex justify-between items-center border-t  border-t-1 border-t-neutral-300">
                 <div className="w-[80%]">
