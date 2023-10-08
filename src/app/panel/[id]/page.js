@@ -28,6 +28,7 @@ export default function Home({params}) {
     const [voiceLoading, setVoiceLoading] = useState(false)
     const [activeVoice, setActiveVoice] = useState(false)
     const [emotion, setEmotion] = useState("Wink")
+
     const handleBack = () => {
         router.push('/panel')
         if (window.innerWidth < 768) {
@@ -36,9 +37,16 @@ export default function Home({params}) {
     }
 
     useEffect(() => {
+        robotVoice.addEventListener('ended', () => setActiveVoice(false));
+        return () => {
+            robotVoice.removeEventListener('ended', () => setActiveVoice(false));
+        };
+    }, []);
+
+
+    useEffect(() => {
         scrollbars.current.scrollToBottom()
     }, [chatHistory]);
-
 
     const getChats = async () => {
         try {
@@ -208,10 +216,7 @@ export default function Home({params}) {
         }
         setVoiceLoading(false)
     }
-    const handleEnded = () => {
-        robotVoice.pause()
-        setActiveVoice(false)
-    }
+
     const handlePauseVoice = () => {
         robotVoice.pause()
         setActiveVoice(false)
@@ -413,11 +418,6 @@ export default function Home({params}) {
                         </div>
                     ))
                 }
-                <div>
-                    <audio id="myAudio" onEnded={handleEnded}>
-                        <source src={robotVoice} type="audio/mpeg"/>
-                    </audio>
-                </div>
             </Scrollbars>
 
             <div

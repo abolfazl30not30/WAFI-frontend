@@ -27,8 +27,7 @@ const Login = () => {
                 width={0}
                 height={0}
                 sizes="100vw"
-                style={{ width: "100%", height: "auto" }}
-              />
+                style={{ width: "100%", height: "auto" }}/>
             </div>
                 <h2 className=" text-3xl  md:text-2xl lg:text-3xl font-bold text-[#333333] font-inter mb-6 sm:mb-8 md:mb-10 lg:mb- xl:mb-20 text-center">
                   <span>Welcome</span> to
