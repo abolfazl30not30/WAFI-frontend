@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import {useRouter} from "next/navigation";
 
 const axiosParams = {
-    baseURL: 'https://wafi-backend.neuracase.com/'
+    baseURL: 'https://wafi-api.hashtai.ir'
 }
 
 const axiosInstance = axios.create(axiosParams);

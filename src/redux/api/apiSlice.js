@@ -4,7 +4,7 @@ import { setCredentials, logOut } from '../auth/authSlice'
 import {useRouter} from "next/navigation";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://64.226.125.111:8000',
+    baseUrl: 'https://wafi-api.hashtai.ir',
     prepareHeaders: (headers, { getState }) => {
         const accessToken = getState().auth.access_token
         if (accessToken) {
