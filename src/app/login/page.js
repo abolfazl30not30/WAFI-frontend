@@ -4,8 +4,7 @@ const Login = () => {
   const googleLogin = () => {
     // Replace with your Google OAuth 2.0 client ID and redirect URI
       //wafi-api.neuracase.com
-    const clientId =
-      "188888100839-1840iic8vn85kj85a28gqcn92262lblm.apps.googleusercontent.com";
+    const clientId = "188888100839-1840iic8vn85kj85a28gqcn92262lblm.apps.googleusercontent.com";
     const clientSecret = "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";
     const redirectUri = "https://wafi-api.neuracase.com/redirect";
     const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email%20profile`;
