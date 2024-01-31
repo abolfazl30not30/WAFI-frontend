@@ -12,6 +12,7 @@ const Login = () => {
     window.location.href = authUrl;
   };
 
+
   return (
     <>
       <body suppressHydrationWarning={true} className="max-h-screen">
