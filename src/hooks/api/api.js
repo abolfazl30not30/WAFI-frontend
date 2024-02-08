@@ -7,6 +7,7 @@ const axiosParams = {
     baseURL: 'http://185.79.157.8:8000',
 }
 
+
 const axiosInstance = axios.create(axiosParams);
 
 const api = {
