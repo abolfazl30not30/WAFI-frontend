@@ -15,7 +15,7 @@ const Redirect = () => {
   useEffect(() => {
       const code = searchParams.get('code')
     if (code) {
-      const serverEndpoint = `http://185.79.157.8:8000/users/login/google?code=${code}`;
+      const serverEndpoint = `https://wafi.hashtai.ir/users/login/google?code=${code}`;
       axios
         .post(serverEndpoint)
         .then((response) => {
