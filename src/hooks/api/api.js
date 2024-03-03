@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import {useRouter} from "next/navigation";
 
 const axiosParams = {
-    baseURL: 'https://wafi.hashtai.ir',
+    baseURL: 'http://185.79.157.8:8000',
 }
 
 
