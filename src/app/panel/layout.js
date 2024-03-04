@@ -33,7 +33,7 @@ export default function RootLayout({children}) {
 
     const getChats = async ()=>{
         try {
-            const res = await api.get("chats")
+            const res = await api.get("chats/")
             setChats(res)
         }catch (err){
             toast.error("the connection has error !", {
@@ -85,7 +85,7 @@ export default function RootLayout({children}) {
         let formData = new FormData();
         formData.append("pdf", selectedFiles[0]);
         try {
-            const res = await api.postFile(`chats/create?title=${selectedFiles[0].name}`,formData)
+            const res = await api.postFile(`chats/create?title=${selectedFiles[0].name}/`,formData)
             notify()
             handleClose();
             getChats()

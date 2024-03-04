@@ -50,7 +50,7 @@ export default function Home({params}) {
 
     const getChats = async () => {
         try {
-            const res = await api.get(`chats/read/${params.id}`)
+            const res = await api.get(`chats/read/${params.id}/`)
             setChat(res)
             if (res.chat_history !== []) {
                 setChatHistory(res?.chat_history)
@@ -96,7 +96,7 @@ export default function Home({params}) {
         formData.append("audio", "")
 
         try {
-            await api.postFile(`chats/new_message?chat_id=${params.id}&input_type=text&output_type=text&new_message=${newMassage}`, formData)
+            await api.postFile(`chats/new_message?chat_id=${params.id}&input_type=text&output_type=text&new_message=${newMassage}/`, formData)
             getChats()
         } catch (err) {
             toast.error("Has Error !", {
@@ -115,7 +115,7 @@ export default function Home({params}) {
         formData.append("audio", "")
 
         try {
-            await api.postFile(`chats/new_message?chat_id=${params.id}&input_type=text&output_type=text&new_message=${mag}`, formData)
+            await api.postFile(`chats/new_message?chat_id=${params.id}&input_type=text&output_type=text&new_message=${mag}/`, formData)
             getChats()
         } catch (err) {
 
@@ -189,7 +189,7 @@ export default function Home({params}) {
         formData.append("audio_file", blob)
 
         try {
-            const res = await api.postFile("chats/transcribe", formData)
+            const res = await api.postFile("chats/transcribe/", formData)
             handleSendMassageByVoice(res)
         } catch (err) {
             toast.error("Has Error !", {
@@ -208,7 +208,7 @@ export default function Home({params}) {
     const handlePlayVoice = async (msg) => {
         setVoiceLoading(true)
         if (robotVoice.paused) {
-            const res = await api.post(`chats/tts?text=${msg}`)
+            const res = await api.post(`chats/tts?text=${msg}/`)
             let audio = new Audio("data:audio/wav;base64," + res)
             audio.play()
             setRobotVoice(audio)
